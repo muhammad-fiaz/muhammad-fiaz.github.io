@@ -38,7 +38,7 @@ To view a live example, **[click here](https://muhammad-fiaz.github.io/)**
 - [<b>Fontawesome</b>](https://fontawesome.com/)
 - [<b>Google Fonts</b>](https://fonts.google.com/)
 - [<b>Tippy</b>](https://atomiks.github.io/tippyjs/)
-- [<b>Elfsight Visitor Counter Widget</b>](https://elfsight.com/visitor-counter-widget/)
+
 
 ## 🚀 Contributing
 
