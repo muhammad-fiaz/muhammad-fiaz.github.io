@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: 
+Sitemap: https://muhammad-fiaz.github.io/sitemap.xml
