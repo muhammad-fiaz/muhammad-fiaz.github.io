@@ -8,7 +8,7 @@
 ## Website Preview
 
 
-![muhammad-fiaz](https://user-images.githubusercontent.com/75434191/195672925-3ee28b7e-6bcd-42d8-8fd5-c8dcc32cc4eb.png)
+![muhammad-fiaz](https://github.com/muhammad-fiaz/muhammad-fiaz.github.io/assets/75434191/deebf9ce-16e4-4dcd-aa8c-67836e11a1a7)
 
 
 <br><br>
