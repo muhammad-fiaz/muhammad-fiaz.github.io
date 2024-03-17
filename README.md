@@ -1,6 +1,5 @@
 # Personal Portfolio Card ⚡
 
-> A clean, beautiful, ambient portfolio template for Software Developers!
 
 > https://muhammad-fiaz.github.io
 
@@ -13,7 +12,7 @@
 
 <br><br>
 
-> Make Sure to ⭐ the Repo if You liked it -- It Helps!
+> Make Sure to ⭐ the Repo if You liked it
 
 ## 📋 Features
 
