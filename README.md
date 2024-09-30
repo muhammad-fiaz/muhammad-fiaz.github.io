@@ -3,9 +3,6 @@
 </div>
 
 
->  demo: https://muhammad-fiaz.github.io
-
-
 ## Website Preview
 
 
