@@ -1,0 +1,37 @@
+name: Publish README to GitHub Pages Docs
+
+on:
+  push:
+    branches:
+      - main # Trigger workflow on push to the main branch
+
+jobs:
+  publish-readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up repository name
+        id: repo-name
+        run: echo "::set-output name=name::$(basename $GITHUB_REPOSITORY)"
+
+      - name: Clone central docs repository
+        run: |
+          git clone https://github.com/<your-username>/github-pages-docs.git docs
+          cd docs
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+
+      - name: Copy README to docs/repo-name
+        run: |
+          mkdir -p docs/${{ steps.repo-name.outputs.name }}
+          cp README.md docs/${{ steps.repo-name.outputs.name }}/README.md
+
+      - name: Commit and push changes
+        run: |
+          cd docs
+          git add .
+          git commit -m "Update docs for ${{ steps.repo-name.outputs.name }}"
+          git push
