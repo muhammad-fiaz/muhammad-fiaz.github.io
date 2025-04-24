@@ -1,6 +1,10 @@
-<div style="text-align: center;">
-  <h1>🌐 muhammad-fiaz.github.io</h1>
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh; flex-direction: column; text-align: center;">
+  <img src="https://github.com/user-attachments/assets/ee972df1-cd10-48bb-86bc-7f608447bafb" alt="Image" style="max-width: 100%; height: auto;">
+  <h1 style="text-align: center;">🌐 muhammad-fiaz.github.io</h1>
 </div>
+
+
+
 
 
 <br>
