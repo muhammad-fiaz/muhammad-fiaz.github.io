@@ -18,7 +18,7 @@ const image =
 const schema =
     page !== "blog"
         ? {
-          "@context": "http://schema.org",
+          "@context": "https://schema.org",
           "@type": "Person",
           name: "Muhammad Fiaz",
           url: Astro.url.origin,
@@ -87,6 +87,9 @@ const schema =
       content={image || `${Astro.url.origin}/og-image.webp`}
       property="og:image"
   />
+  <meta content="muhammad, fiaz, full stack developer, open-source, blog, travel, portfolio" name="keywords" />
+  <meta content="Fiaz Technologies" name="publisher" />
+
   <!-- Basic Twitter Card tags -->
   <meta content="summary_large_image" name="twitter:card" />
   <meta content={title} name="twitter:title" />
@@ -134,7 +137,6 @@ const schema =
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-    font-weight: 100 1000;
   }
   @font-face {
     font-family: "Satoshi";
@@ -142,7 +144,6 @@ const schema =
     font-weight: normal;
     font-style: normal;
     font-display: swap;
-    font-weight: 100 1000;
   }
 
   body {
@@ -160,7 +161,7 @@ const schema =
     font-family: "Cabinet Grotesk", sans-serif;
   }
   p {
-    font-family: "Satoshi";
+    font-family: "Satoshi",serif;
   }
 
   b {
