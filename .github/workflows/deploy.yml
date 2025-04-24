@@ -35,6 +35,6 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           personal_token: ${{ secrets.TOKEN }}  # Use your custom secret TOKEN
-          branch: gh-pages  # Deploy to this branch
-          folder: dist  # Output folder from `astro build`
-          cname: muhammadfiaz.github.io  # Optional: custom domain
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          cname: muhammadfiaz.github.io

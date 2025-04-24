@@ -28,6 +28,5 @@ export default defineConfig({
   },
   build: {
     prerender: true,
-    base: "/muhammadfiaz.github.io/",
   },
 });
