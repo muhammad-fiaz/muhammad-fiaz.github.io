@@ -13,9 +13,11 @@ export default defineConfig({
   integrations: [
     sitemap(),
     robotsTxt({
+      policy: [{ userAgent: "*", allow: "/" }],
       sitemap: [
         "https://muhammadfiaz.github.io/sitemap-index.xml",
         "https://muhammadfiaz.github.io/sitemap-0.xml",
+
       ],
     }),
     solidJs(),

@@ -99,14 +99,20 @@ const schema =
   <link href="https://cdn.fontshare.com" rel="preconnect" />
   {
       page === "travel" && (
-          <link href={`${Astro.url.origin}/travel`} rel="canonical" />
+          <link href={`https://muhammadfiaz.com/travel`} rel="canonical" />
       )
   }
   {
-      page === "blog" && (
-          <link href={`${Astro.url.origin}/blog/${slug}`} rel="canonical" />
+      page === "blog" && slug && (
+          <link href={`https://muhammadfiaz.com/blog/${slug}`} rel="canonical" />
       )
   }
+  {
+      !page && (
+          <link href={`https://muhammadfiaz.com/`} rel="canonical" />
+      )
+  }
+
   <script
       is:inline
       set:html={JSON.stringify(schema)}
