@@ -1,7 +1,45 @@
+# Node.js dependencies
+node_modules/
 
+# Astro build output
+/dist/
+/public/
 
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
+# .env files
+.env
+.env.local
+.env.*.local
+
+# Local development environment files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.swp
+*.swo
+
+# Package-lock / Yarn lock
+package-lock.json
+yarn.lock
+
+# npm and Yarn debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Astro debug files
+.astro/
+
+# JetBrains IDEs
+.idea/
+
+# VSCode IDE
+.vscode/
+/.netlify/

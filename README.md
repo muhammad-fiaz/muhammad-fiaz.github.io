@@ -1,68 +1,102 @@
 <div style="text-align: center;">
-  <h1>Personal Portfolio Card ⚡</h1>
+  <h1>🌐 muhammad-fiaz.github.io</h1>
 </div>
 
 
-## Website Preview
+<br>
 
+> Make sure to ⭐ the repo if you found it helpful!
 
-![muhammad-fiaz](https://github.com/muhammad-fiaz/muhammad-fiaz.github.io/assets/75434191/deebf9ce-16e4-4dcd-aa8c-67836e11a1a7)
+## ✨ Features
 
+- ⚡ Built with [Astro](https://astro.build/)
+- ⚡ Uses Svelte, SolidJS, and powerful animation tools like GSAP & Lenis
+- ⚡ UnoCSS utility-first styling
+- ⚡ SEO ready with Sitemap, RSS, and Robots.txt integration
+- ⚡ Analytics and performance optimized
 
-<br><br>
+## 📦 Tech Stack
 
-> Make Sure to ⭐ the Repo if You liked it
+- **Framework**: Astro (modular & fast)
+- **Styling**: UnoCSS with autoprefixer
+- **Animation**: GSAP + Lenis
+- **Icons**: Iconify + Astro Icon
+- **Data Visualization**: D3.js
+- **Languages**: TypeScript, HTML5, CSS3, Markdown
 
-## 📋 Features
+## 🚀 Getting Started
 
-⚡️ Open-Source\
-⚡️ Valid HTML5 & CSS3\
-⚡️ Easy to modify
-
-## 📦 Installation & Deployment
-
-- Clone the repository and modify the content of <b>index.html</b> according to your requirement.
-- Add or remove images from `muhammad-fiaz.github.io/assets/` directory as per your requirement.
-- I highly recommend to use [Github Pages](https://docs.github.com/en/pages) to deploy the website in EASIEST WAY.
-- To deploy your website, first you need to create github repository with name `<your-github-username>.github.io`. Please don't give any other name.
-- Push the generated code to the `master` branch of this repository.
-
-
-To view a live example, **[click here](https://muhammad-fiaz.github.io/)**
-
-## 🛠️ Tools Used
-
-- [<b>Bootstrap v5</b>](https://getbootstrap.com/)
-- [<b>Fontawesome</b>](https://fontawesome.com/)
-- [<b>Google Fonts</b>](https://fonts.google.com/)
-- [<b>Tippy</b>](https://atomiks.github.io/tippyjs/)
-
-
-## 🚀 Contributing
-
-### Step 1: Clone The Repo 💡
-
-Fork the repository and then clone it locally by doing -
+Clone the repo:
 
 ```bash
 git clone https://github.com/muhammad-fiaz/muhammad-fiaz.github.io.git
+cd muhammad-fiaz.github.io
+npm install
 ```
 
-### Step 2: Build Your Code 🔨
-
-Start your magic by modifying the code and making changes of your own. Then push the commit using -
+### 📌 Development
 
 ```bash
-git add .
-git commit -m "<your commit message here>"
-git push YOUR_REPO_URL develop
+npm run dev
 ```
 
-### Step 3: Create a new pull request 🔃
+### 📌 Production Build
 
-After cloning & setting up the local project you can push the changes to your github fork and make a pull request.
+```bash
+npm run build
+```
 
+### 📌 Preview Build
 
+```bash
+npm run preview
+```
 
+## 🌍 Deployment
 
-Made with :heart: by Muhammad Fiaz
+This project is optimized for deployment on [Netlify](https://www.netlify.com/) or [GitHub Pages](https://pages.github.com/). To deploy on GitHub Pages:
+
+- Create a new repo named: `<your-github-username>.github.io`
+- Push the build output (`dist` folder) to the root of that repo
+- Or configure Netlify to deploy the `dist/` folder directly from your main branch
+
+## 🔧 Configuration
+
+Make changes in:
+
+- `src/pages/index.astro` – main homepage content
+- `src/assets/` – for images and static content
+- `astro.config.mjs` – modify integrations or base settings
+
+## 🛠️ Tools Used
+
+- [Astro](https://astro.build/)
+- [UnoCSS](https://unocss.dev/)
+- [GSAP](https://greensock.com/gsap/)
+- [Lenis Smooth Scroll](https://lenis.studiofreight.com/)
+- [Iconify](https://iconify.design/)
+- [D3.js](https://d3js.org/)
+- [World Map](https://github.com/johan/world.geo.json/tree/master)
+
+## 🧠 Linting & Type Checking
+
+```bash
+npm run check   # Type check with Astro
+npm run eslint  # Lint source files
+```
+
+## 📬 Contact
+
+If you have any questions or feedback, feel free to reach out at [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com)
+
+## 🤝 Contributing
+
+1. Fork this repo
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+Made with ❤️ by **Muhammad Fiaz**
