@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '20'  # Specify your Node.js version here
+          node-version: '20'  # Use Node.js v20
 
       # Install dependencies
       - name: Install dependencies
@@ -34,7 +34,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          personal_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: gh-pages  # The branch to deploy to
-          folder: dist  # The folder where the static site is generated
-          cname: muhammadfiaz.github.io  # Optional: Custom domain if you have one
+          personal_token: ${{ secrets.TOKEN }}  # Use your custom secret TOKEN
+          branch: gh-pages  # Deploy to this branch
+          folder: dist  # Output folder from `astro build`
+          cname: muhammadfiaz.github.io  # Optional: custom domain
