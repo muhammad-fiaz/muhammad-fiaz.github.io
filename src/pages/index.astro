@@ -1,104 +1,99 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Card from "../components/Card/index.astro";
-import IntroCard from "../components/IntroCard.astro";
-import ContactsCard from "../components/ContactsCard.astro";
-import TimeZone from "../components/TimeZoneCard.astro";
-import AboutMe from "../components/AboutMe.astro";
-import Now from "../components/Now.astro";
-import Globe from "../components/Globe";
-import { getCollection } from "astro:content";
-import { formatDate } from "../lib/helpers";
-import {LINKS} from "../lib/constants";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { Hero } from "@/components/home/Hero";
+import { About } from "@/components/home/About";
+import { Expertise } from "@/components/home/Expertise";
+import { Projects } from "@/components/home/Projects";
+import { FAQ } from "@/components/home/FAQ";
 
-const posts = (await getCollection("blog"))?.sort(
-    (blogEntryA, blogEntryB) =>
-        (blogEntryB.data.pubDate || new Date()).getTime() -
-        (blogEntryA.data.pubDate || new Date()).getTime()
-);
+const title = "Muhammad Fiaz | Full-stack Developer & Open Source Maintainer";
+const description =
+  "Full-stack developer and open-source maintainer based in Madurai, India. Building developer-first tools, software, and AI applications.";
+const permalink = "https://muhammad-fiaz.github.io/";
 ---
 
-<script>
-  import { stagger, animate, type AnimationSequence } from "motion";
-  import { loaderAnimation } from "../lib/constants";
-  const cards = document.querySelectorAll(".card");
-
-  const sequence = [
-    loaderAnimation,
-    [
-      cards,
-      { y: ["40%", "0%"], opacity: [0, 1] },
-      {
-        type: "spring",
-        at: "-0.1",
-        delay: stagger(0.3),
-      },
-    ],
-  ];
-
-  animate(sequence as AnimationSequence);
-</script>
-
-<Layout
-description="I'm Muhammad Fiaz, a Full Stack Developer and Open-Source Maintainer from Madurai, India. I'm passionate about building tools, developer platforms, and intelligent systems using JavaScript, Python, Astro, FastAPI, and AI/ML technologies."
-title="Muhammad Fiaz - Full Stack Developer & Open Source Maintainer"
->
-<main
-class="text-white m-auto p-2 grid gap-2 max-w-6xl overflow-hidden relative w-full sm:p-4 sm:gap-2 md:grid-cols-2 md:gap-3 md:p-6 lg:h-screen lg:grid-rows-8 lg:grid-cols-4 lg:gap-4 lg:max-h-[800px]"
->
-<IntroCard />
-<AboutMe />
-<ContactsCard />
-<TimeZone />
-<Now />
-<Card
-colorText="text-neutral-900"
-colSpan="md:col-span-1"
-href="travel"
-rowSpan="md:row-span-1"
-title="Places I've Visited"
->
-<div class="h-full w-full absolute inset-0 -z-10">
-<Globe client:load />
-</div>
-</Card>
-<Card
-colSpan="md:col-span-1"
-href="/blog"
-rowSpan="md:row-span-2 flex gap-1"
-title="Latest Blog Posts"
->
-<div class="flex flex-col gap-1">
-{
-    posts?.slice(0, 3).map((post) => (
-        <div class="list-none w-full text-neutral-100 hover:text-neutral-400 ease-in-out transition-colors border-b-neutral-400 border-dashed border-b-1 my-0">
-    <p class="inline-block whitespace-nowrap text-xs">
-    {post.data.title}
-    </p>
-    {post.data.pubDate && (
-    <time
-    class="text-right tabular-nums text-xs"
-    data-date={post.data.pubDate.toISOString()}
-    datetime={post.data.pubDate.toISOString()}
-        >
-        {formatDate(post.data.pubDate)}
-    </time>
-    )}
+<BaseLayout title={title} description={description}>
+  <head slot="head">
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={permalink} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={permalink} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta
+      property="og:image"
+      content="https://avatars.githubusercontent.com/u/75434191?v=4"
+    />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={permalink} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+    <meta
+      property="twitter:image"
+      content="https://avatars.githubusercontent.com/u/75434191?v=4"
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Muhammad Fiaz",
+        url: permalink,
+        image: "https://avatars.githubusercontent.com/u/75434191?v=4",
+        sameAs: [
+          "https://github.com/muhammad-fiaz",
+          "https://www.linkedin.com/in/muhammad-fiaz-/",
+          "https://muhammad-fiaz.medium.com/",
+          "https://muhammadfiaz.hashnode.dev/",
+        ],
+        jobTitle: "Full-stack Developer",
+        worksFor: { "@type": "Organization", name: "Open Source" },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Madurai",
+          addressRegion: "Tamil Nadu",
+          addressCountry: "India",
+        },
+      })}
+    />
+  </head>
+  <div class="fixed inset-0 -z-50 pointer-events-none">
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+    >
     </div>
-    ))
-    }
+    <div
+      class="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-primary/5 to-transparent"
+    >
     </div>
-    </Card>
-    <Card colSpan="md:col-span-1" rowSpan="md:row-span-1">
-    <p class="text-xs">
-    © 2025 · Built with ♥️ using <a
-    class="text-red-500"
-    href="https://astro.build/"
-    target="_blank">Astro</a> by
-    <a class="text-blue-400 hover:underline" href={LINKS.github} target="_blank">
-        Muhammad Fiaz
-        </a>.
-    </p>
-    </Card>
-    </main>
-    </Layout>
+  </div>
+
+  {/* Use snap scrolling for full-screen sections feel */}
+  <div class="h-auto w-full">
+    <Hero client:load />
+
+    <About client:visible />
+
+    <Expertise client:visible />
+
+    <section
+      id="projects"
+      class="min-h-screen flex flex-col justify-center py-24 relative"
+    >
+      <div class="container max-w-6xl mx-auto px-4">
+        <div class="text-center mb-16 space-y-4">
+          <h2 class="text-3xl md:text-5xl font-bold tracking-tight">
+            Recent Projects
+          </h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            A collection of projects driven by performance, developer
+            experience, and long-term maintainability.
+          </p>
+        </div>
+        <Projects client:visible />
+      </div>
+    </section>
+
+    <FAQ client:load />
+  </div>
+</BaseLayout>

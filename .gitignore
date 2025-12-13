@@ -1,45 +1,24 @@
-# Node.js dependencies
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
 node_modules/
 
-# Astro build output
-/dist/
-/public/
-
-# .env files
-.env
-.env.local
-.env.*.local
-
-# Local development environment files
-.vscode/
-.idea/
-
-# Logs
-*.log
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Temporary files
-*.swp
-*.swo
-
-# Package-lock / Yarn lock
-package-lock.json
-yarn.lock
-
-# npm and Yarn debug files
+# logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Astro debug files
-.astro/
 
-# JetBrains IDEs
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
 .idea/
-
-# VSCode IDE
-.vscode/
-/.netlify/

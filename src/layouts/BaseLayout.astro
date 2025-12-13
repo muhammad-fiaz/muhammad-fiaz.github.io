@@ -1,0 +1,57 @@
+---
+import "../styles/global.css";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "Muhammad Fiaz - Full-stack developer and open-source maintainer.",
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script is:inline>
+      const getThemePreference = () => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme-storage")
+        ) {
+          try {
+            const storage = JSON.parse(localStorage.getItem("theme-storage"));
+            return storage.state.theme;
+          } catch (e) {
+            return "dark"; // Fallback
+          }
+        }
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+      };
+      const theme = getThemePreference();
+      const isDark =
+        theme === "dark" ||
+        (theme === "system" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches);
+      document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+    </script>
+  </head>
+  <body class="bg-background font-sans antialiased">
+    <Navbar client:load />
+    <main class="flex-1 w-full">
+      <slot />
+    </main>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { ServerError } from "@/components/pages/ServerError";
+---
+
+<BaseLayout
+  title="500 - Server Error"
+  description="An internal server error occurred."
+>
+  <ServerError client:load />
+</BaseLayout>
