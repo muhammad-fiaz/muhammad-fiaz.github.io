@@ -2,27 +2,25 @@
 import "../styles/global.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import SEO from "@/components/SEO.astro";
 
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
 
 const {
   title,
   description = "Muhammad Fiaz - Full-stack developer and open-source maintainer.",
+  image,
 } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <SEO title={title} description={description} image={image} />
     <script is:inline>
       const getThemePreference = () => {
         if (
@@ -47,6 +45,7 @@ const {
           window.matchMedia("(prefers-color-scheme: dark)").matches);
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
     </script>
+    <slot name="head" />
   </head>
   <body class="bg-background font-sans antialiased">
     <Navbar client:load />

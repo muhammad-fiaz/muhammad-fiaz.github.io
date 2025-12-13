@@ -12,58 +12,14 @@ const description =
 const permalink = "https://muhammad-fiaz.github.io/";
 ---
 
-<BaseLayout title={title} description={description}>
-  <head slot="head">
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={permalink} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={permalink} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta
-      property="og:image"
-      content="https://avatars.githubusercontent.com/u/75434191?v=4"
-    />
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={permalink} />
-    <meta property="twitter:title" content={title} />
-    <meta property="twitter:description" content={description} />
-    <meta
-      property="twitter:image"
-      content="https://avatars.githubusercontent.com/u/75434191?v=4"
-    />
-    <script
-      type="application/ld+json"
-      set:html={JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Person",
-        name: "Muhammad Fiaz",
-        url: permalink,
-        image: "https://avatars.githubusercontent.com/u/75434191?v=4",
-        sameAs: [
-          "https://github.com/muhammad-fiaz",
-          "https://www.linkedin.com/in/muhammad-fiaz-/",
-          "https://muhammad-fiaz.medium.com/",
-          "https://muhammadfiaz.hashnode.dev/",
-        ],
-        jobTitle: "Full-stack Developer",
-        worksFor: { "@type": "Organization", name: "Open Source" },
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Madurai",
-          addressRegion: "Tamil Nadu",
-          addressCountry: "India",
-        },
-      })}
-    />
-  </head>
+<BaseLayout title={title} description={description} image="https://avatars.githubusercontent.com/u/75434191?v=4">
   <div class="fixed inset-0 -z-50 pointer-events-none">
     <div
-      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
     >
     </div>
     <div
-      class="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-primary/5 to-transparent"
+      class="absolute top-0 left-0 right-0 h-125 bg-linear-to-b from-primary/5 to-transparent"
     >
     </div>
   </div>

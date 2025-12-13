@@ -10,6 +10,7 @@ import partytown from '@astrojs/partytown';
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'static',
   site: 'https://muhammad-fiaz.github.io',
   image: {
     domains: ["avatars.githubusercontent.com"],

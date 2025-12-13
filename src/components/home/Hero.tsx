@@ -15,8 +15,8 @@ export function Hero() {
   }, []);
 
   return (
-    <section id="hero" className="relative min-h-[100dvh] flex flex-col justify-center py-20 overflow-hidden z-0">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/5 via-background to-background opacity-70 pointer-events-none" />
+    <section id="hero" className="relative min-h-dvh flex flex-col justify-center py-20 overflow-hidden z-0">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,var(--tw-gradient-stops))] from-primary/5 via-background to-background opacity-70 pointer-events-none" />
       
       <div className="container max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         {/* Left Column: Content */}
@@ -72,7 +72,7 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex justify-center md:justify-end"
         >
-            <div className="relative inline-block p-1 rounded-2xl bg-gradient-to-tr from-primary/20 to-secondary/20 backdrop-blur-sm">
+            <div className="relative inline-block p-1 rounded-2xl bg-linear-to-tr from-primary/20 to-secondary/20 backdrop-blur-sm">
                  <img 
                     src="https://avatars.githubusercontent.com/u/75434191?v=4" 
                     alt="Muhammad Fiaz" 
