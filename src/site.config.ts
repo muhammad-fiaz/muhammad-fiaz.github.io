@@ -127,7 +127,26 @@ export const siteConfig = {
       "Fiaz Technologies"
     ] as string[],
     robots: "index, follow"
-  }
+  },
+
+  // External Sitemaps (VitePress documentation sites)
+  // These are included in the master sitemap index for comprehensive SEO
+  externalSitemaps: [
+    // Zig Libraries
+    "https://muhammad-fiaz.github.io/args.zig/sitemap.xml",
+    "https://muhammad-fiaz.github.io/logly.zig/sitemap.xml",
+    "https://muhammad-fiaz.github.io/zon.zig/sitemap.xml",
+    "https://muhammad-fiaz.github.io/mcp.zig/sitemap.xml",
+    "https://muhammad-fiaz.github.io/updater.zig/sitemap.xml",
+    "https://muhammad-fiaz.github.io/zigantic/sitemap.xml",
+    
+    // Python Libraries  
+    "https://muhammad-fiaz.github.io/logly/sitemap.xml",
+    "https://muhammad-fiaz.github.io/pywebui/sitemap.xml",
+    
+    // Other projects with GitHub Pages
+    "https://muhammad-fiaz.github.io/portfolio/sitemap.xml",
+  ] as string[]
 };
 
 // Type exports for TypeScript support

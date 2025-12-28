@@ -25,16 +25,25 @@ export default defineConfig({
   integrations: [
     react(),
     
-    // Sitemap generation
+    // Sitemap generation with external sitemaps for VitePress docs
     sitemap({
       filter: (page) => !page.includes("/404") && !page.includes("/500"),
       customPages: [
         "https://muhammad-fiaz.github.io/",
         "https://muhammad-fiaz.github.io/works",
         "https://muhammad-fiaz.github.io/projects",
+        "https://muhammad-fiaz.github.io/blog",
         "https://muhammad-fiaz.github.io/privacy-policy",
         "https://muhammad-fiaz.github.io/terms-of-service",
         "https://muhammad-fiaz.github.io/cookie-policy",
+      ],
+      // External sitemaps from VitePress documentation sites
+      // These will be included in sitemap-index.xml
+      customSitemaps: [
+        // Zig Libraries
+        "https://muhammad-fiaz.github.io/args.zig/sitemap.xml",
+        "https://muhammad-fiaz.github.io/logly.zig/sitemap.xml",
+     
       ],
     }),
     
