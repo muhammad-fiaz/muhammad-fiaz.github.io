@@ -37,55 +37,75 @@ const { authorName, posts } = Astro.props;
   title={`Posts by ${authorName}`}
   description={`All blog posts written by ${authorName}`}
 >
-  <div class="container max-w-4xl mx-auto px-4 py-12 sm:py-20">
-    <Button
-      variant="ghost"
-      asChild
-      className="mb-8 pl-0 hover:bg-transparent hover:text-primary gap-2"
-    >
-      <a href="/blog">
-        <ArrowLeft className="h-4 w-4" />
-        Back to Blog
-      </a>
-    </Button>
+  <div
+    class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20"
+  >
+    <!-- Back Button - Responsive -->
+    <div class="mb-6 sm:mb-8">
+      <Button
+        variant="ghost"
+        asChild
+        className="group pl-0 hover:bg-transparent hover:text-primary gap-2 text-sm sm:text-base"
+      >
+        <a href="/blog" class="inline-flex items-center gap-2">
+          <ArrowLeft
+            className="h-4 w-4 transition-transform group-hover:-translate-x-1"
+          />
+          <span class="hidden sm:inline">Back to Blog</span>
+          <span class="sm:hidden">Back</span>
+        </a>
+      </Button>
+    </div>
 
-    <h1 class="text-3xl sm:text-4xl font-bold mb-8">
-      Posts by <span class="text-primary">{authorName}</span>
-    </h1>
+    <!-- Header -->
+    <div class="mb-6 sm:mb-8 md:mb-10">
+      <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold">
+        Posts by <span class="text-primary">{authorName}</span>
+      </h1>
+      <p class="text-sm sm:text-base text-muted-foreground mt-2">
+        {posts.length} post{posts.length !== 1 ? "s" : ""} published
+      </p>
+    </div>
 
-    <div class="grid gap-6 sm:gap-8">
+    <!-- Posts Grid -->
+    <div class="grid gap-4 sm:gap-6 md:gap-8">
       {
         posts.map((post) => (
           <a
             href={`/blog/${post.id}`}
-            class="group block p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+            class="group block p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 hover:shadow-lg transition-all duration-300"
           >
-            <div class="flex flex-col gap-2">
-              <h2 class="text-2xl sm:text-3xl font-semibold group-hover:text-primary transition-colors">
+            <div class="flex flex-col gap-2 sm:gap-3">
+              <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold group-hover:text-primary transition-colors">
                 {post.data.title}
               </h2>
-              <div class="flex items-center gap-2 text-sm text-muted-foreground">
+              <div class="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-muted-foreground">
                 <time datetime={post.data.pubDate.toISOString()}>
                   {post.data.pubDate.toLocaleDateString("en-US", {
                     year: "numeric",
-                    month: "long",
+                    month: "short",
                     day: "numeric",
                   })}
                 </time>
                 {post.data.tags && (
                   <>
-                    <span>•</span>
-                    <div class="flex gap-2">
-                      {post.data.tags.map((tag) => (
-                        <span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-medium">
+                    <span class="hidden sm:inline">•</span>
+                    <div class="hidden sm:flex flex-wrap gap-1.5">
+                      {post.data.tags.slice(0, 2).map((tag) => (
+                        <span class="bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium">
                           {tag}
                         </span>
                       ))}
+                      {post.data.tags.length > 2 && (
+                        <span class="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] sm:text-xs">
+                          +{post.data.tags.length - 2}
+                        </span>
+                      )}
                     </div>
                   </>
                 )}
               </div>
-              <p class="text-muted-foreground leading-relaxed mt-2 line-clamp-2">
+              <p class="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed mt-1 line-clamp-2">
                 {post.data.description}
               </p>
             </div>
@@ -93,5 +113,13 @@ const { authorName, posts } = Astro.props;
         ))
       }
     </div>
+
+    {
+      posts.length === 0 && (
+        <div class="text-center py-12 sm:py-16 text-muted-foreground">
+          <p class="text-sm sm:text-base">No posts found by this author.</p>
+        </div>
+      )
+    }
   </div>
 </BaseLayout>

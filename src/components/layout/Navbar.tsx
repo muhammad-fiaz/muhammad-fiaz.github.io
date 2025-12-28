@@ -11,12 +11,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Heart, Menu, Home, Briefcase, FolderGit2, User } from "lucide-react";
+import { Heart, Menu, Home, Briefcase, FolderGit2, User, BookOpen } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Works", href: "/works", icon: Briefcase },
   { name: "Projects", href: "/projects", icon: FolderGit2 },
+  { name: "Blog", href: "/blog", icon: BookOpen },
   { name: "About", href: "/#about", icon: User },
 ];
 

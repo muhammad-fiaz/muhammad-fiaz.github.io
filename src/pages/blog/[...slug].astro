@@ -3,7 +3,13 @@ import { getCollection, render } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  User as UserIcon,
+  Clock,
+  Tag,
+} from "lucide-react";
 import { slugify } from "@/lib/utils";
 
 export async function getStaticPaths() {
@@ -20,6 +26,11 @@ interface Props {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+// Calculate reading time (rough estimate)
+const wordsPerMinute = 200;
+const wordCount = post.body?.split(/\s+/).length || 0;
+const readingTime = Math.ceil(wordCount / wordsPerMinute);
 ---
 
 <BaseLayout
@@ -28,61 +39,123 @@ const { Content } = await render(post);
   type="article"
   publishedTime={post.data.pubDate.toISOString()}
 >
-  <div class="container max-w-3xl mx-auto px-4 py-12 sm:py-20">
-    <Button
-      variant="ghost"
-      asChild
-      className="mb-8 pl-0 hover:bg-transparent hover:text-primary gap-2"
-    >
-      <a href="/blog">
-        <ArrowLeft className="h-4 w-4" />
-        Back to Blog
-      </a>
-    </Button>
+  <div
+    class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20"
+  >
+    <!-- Back to Blog Button - Responsive -->
+    <div class="mb-6 sm:mb-8">
+      <Button
+        variant="ghost"
+        asChild
+        className="group pl-0 hover:bg-transparent hover:text-primary gap-2 text-sm sm:text-base"
+      >
+        <a href="/blog" class="inline-flex items-center gap-2">
+          <ArrowLeft
+            className="h-4 w-4 transition-transform group-hover:-translate-x-1"
+          />
+          <span class="hidden sm:inline">Back to Blog</span>
+          <span class="sm:hidden">Back</span>
+        </a>
+      </Button>
+    </div>
 
-    <article class="prose prose-lg dark:prose-invert max-w-none">
-      <div class="mb-8 not-prose">
+    <article
+      class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border"
+    >
+      <!-- Article Header -->
+      <header class="mb-8 sm:mb-10 md:mb-12 not-prose">
         <h1
-          class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
+          class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4 sm:mb-6 leading-tight"
         >
           {post.data.title}
         </h1>
-        <div class="flex flex-wrap items-center gap-4 text-muted-foreground">
-          <time datetime={post.data.pubDate.toISOString()}>
-            {
-              post.data.pubDate.toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })
-            }
-          </time>
-          <span>•</span>
+
+        <!-- Article Meta - Responsive Grid -->
+        <div
+          class="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-3 sm:gap-4 text-sm sm:text-base text-muted-foreground"
+        >
+          <!-- Date -->
+          <div class="flex items-center gap-1.5">
+            <Calendar className="h-4 w-4 shrink-0" />
+            <time datetime={post.data.pubDate.toISOString()}>
+              {
+                post.data.pubDate.toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+              }
+            </time>
+          </div>
+
+          <!-- Author -->
+          <div class="hidden sm:block">•</div>
           <a
             href={`/authors/${slugify(post.data.author)}`}
-            class="hover:text-primary transition-colors"
+            class="flex items-center gap-1.5 hover:text-primary transition-colors"
           >
-            {post.data.author}
+            <UserIcon className="h-4 w-4 shrink-0" />
+            <span>{post.data.author}</span>
           </a>
+
+          <!-- Reading Time -->
+          <div class="hidden sm:block">•</div>
+          <div class="flex items-center gap-1.5">
+            <Clock className="h-4 w-4 shrink-0" />
+            <span>{readingTime} min read</span>
+          </div>
         </div>
 
+        <!-- Tags - Responsive -->
         {
           post.data.tags && (
-            <div class="flex flex-wrap gap-2 mt-4">
+            <div class="flex flex-wrap gap-2 mt-4 sm:mt-6">
               {post.data.tags.map((tag) => (
                 <a
                   href={`/tags/${slugify(tag)}`}
-                  class="bg-primary/10 text-primary px-2.5 py-1 rounded-md text-sm font-medium hover:bg-primary/20 transition-colors"
+                  class="inline-flex items-center gap-1 bg-primary/10 text-primary px-2 sm:px-3 py-1 sm:py-1.5 rounded-md text-xs sm:text-sm font-medium hover:bg-primary/20 transition-colors"
                 >
-                  #{tag}
+                  <Tag className="h-3 w-3" />
+                  {tag}
                 </a>
               ))}
             </div>
           )
         }
-      </div>
 
-      <Content />
+        <!-- Description -->
+        {
+          post.data.description && (
+            <p class="mt-4 sm:mt-6 text-base sm:text-lg text-muted-foreground leading-relaxed">
+              {post.data.description}
+            </p>
+          )
+        }
+      </header>
+
+      <!-- Divider -->
+      <hr class="my-6 sm:my-8 border-border not-prose" />
+
+      <!-- Article Content -->
+      <div class="blog-content">
+        <Content />
+      </div>
     </article>
+
+    <!-- Bottom Navigation -->
+    <div class="mt-10 sm:mt-12 md:mt-16 pt-6 sm:pt-8 border-t">
+      <Button
+        variant="outline"
+        asChild
+        className="group gap-2 w-full sm:w-auto"
+      >
+        <a href="/blog" class="inline-flex items-center justify-center gap-2">
+          <ArrowLeft
+            className="h-4 w-4 transition-transform group-hover:-translate-x-1"
+          />
+          <span>Back to all posts</span>
+        </a>
+      </Button>
+    </div>
   </div>
 </BaseLayout>
