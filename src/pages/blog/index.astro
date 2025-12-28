@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+// I'll stick to standard JS date for safety if utils doesn't have it, or check utils.
+// I'll use standard JS for now to avoid errors.
+
+const posts: CollectionEntry<"blog">[] = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+const title = "Blog";
+const description = "Thoughts, tutorials, and updates.";
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="container max-w-4xl mx-auto px-4 py-12 sm:py-20">
+    <div class="mb-12 space-y-4">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+        Blog
+      </h1>
+      <p class="text-muted-foreground text-lg max-w-2xl">
+        Writing about software development, system design, and the latest tech
+        trends.
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:gap-8">
+      {
+        posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="group block p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+          >
+            <div class="flex flex-col gap-2">
+              <h2 class="text-2xl sm:text-3xl font-semibold group-hover:text-primary transition-colors">
+                {post.data.title}
+              </h2>
+              <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                {post.data.tags && (
+                  <>
+                    <span>•</span>
+                    <div class="flex gap-2">
+                      {post.data.tags.map((tag) => (
+                        <span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-medium">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <p class="text-muted-foreground leading-relaxed mt-2 line-clamp-2">
+                {post.data.description}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+
+      {
+        posts.length === 0 && (
+          <div class="text-center py-20 text-muted-foreground">
+            <p>No posts found yet. Check back later!</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>

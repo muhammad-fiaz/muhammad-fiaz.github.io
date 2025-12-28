@@ -1,11 +1,20 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import { NotFound } from "@/components/pages/NotFound";
+import { siteConfig } from "@/site.config";
+
+const title = "404 - Page Not Found | " + siteConfig.author.name;
+const description =
+  "The page you are looking for doesn't exist or has been moved.";
 ---
 
-<BaseLayout
-  title="404 - Not Found"
-  description="The page you are looking for does not exist."
->
+<BaseLayout title={title} description={description} noindex={true}>
+  <div class="fixed inset-0 -z-50 pointer-events-none">
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
+    >
+    </div>
+  </div>
+
   <NotFound client:load />
 </BaseLayout>

@@ -1,0 +1,58 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { slugify } from "@/lib/utils";
+import { ArrowLeft, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+const uniqueAuthors: string[] = [
+  ...new Set(posts.map((post: CollectionEntry<"blog">) => post.data.author)),
+];
+---
+
+<BaseLayout title="Authors" description="Contributions by our team">
+  <div class="container max-w-4xl mx-auto px-4 py-12 sm:py-20">
+    <Button
+      variant="ghost"
+      asChild
+      className="mb-8 pl-0 hover:bg-transparent hover:text-primary gap-2"
+    >
+      <a href="/blog">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Blog
+      </a>
+    </Button>
+
+    <div class="mb-12 space-y-4">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">Authors</h1>
+      <p class="text-muted-foreground text-lg">
+        Contributors who share their knowledge and insights.
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        uniqueAuthors.map((author) => (
+          <a
+            href={`/authors/${slugify(author)}`}
+            class="flex items-center gap-4 p-6 rounded-2xl border border-border/50 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300 group"
+          >
+            <div class="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Users className="h-6 w-6" />
+            </div>
+            <div>
+              <h2 class="text-xl font-semibold group-hover:text-primary transition-colors">
+                {author}
+              </h2>
+              <p class="text-sm text-muted-foreground">
+                {posts.filter((p) => p.data.author === author).length} posts
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

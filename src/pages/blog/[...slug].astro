@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
+import { slugify } from "@/lib/utils";
+
+export async function getStaticPaths() {
+  const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+  return posts.map((post: CollectionEntry<"blog">) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: CollectionEntry<"blog">;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+  publishedTime={post.data.pubDate.toISOString()}
+>
+  <div class="container max-w-3xl mx-auto px-4 py-12 sm:py-20">
+    <Button
+      variant="ghost"
+      asChild
+      className="mb-8 pl-0 hover:bg-transparent hover:text-primary gap-2"
+    >
+      <a href="/blog">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Blog
+      </a>
+    </Button>
+
+    <article class="prose prose-lg dark:prose-invert max-w-none">
+      <div class="mb-8 not-prose">
+        <h1
+          class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4"
+        >
+          {post.data.title}
+        </h1>
+        <div class="flex flex-wrap items-center gap-4 text-muted-foreground">
+          <time datetime={post.data.pubDate.toISOString()}>
+            {
+              post.data.pubDate.toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
+          <span>•</span>
+          <a
+            href={`/authors/${slugify(post.data.author)}`}
+            class="hover:text-primary transition-colors"
+          >
+            {post.data.author}
+          </a>
+        </div>
+
+        {
+          post.data.tags && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {post.data.tags.map((tag) => (
+                <a
+                  href={`/tags/${slugify(tag)}`}
+                  class="bg-primary/10 text-primary px-2.5 py-1 rounded-md text-sm font-medium hover:bg-primary/20 transition-colors"
+                >
+                  #{tag}
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <Content />
+    </article>
+  </div>
+</BaseLayout>

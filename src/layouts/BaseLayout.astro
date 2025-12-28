@@ -3,24 +3,59 @@ import "../styles/global.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import SEO from "@/components/SEO.astro";
+import { siteConfig } from "@/site.config";
 
 interface Props {
-  title: string;
+  title?: string;
   description?: string;
   image?: string;
+  type?: "website" | "article" | "profile";
+  publishedTime?: string;
+  modifiedTime?: string;
+  centered?: boolean;
+  noindex?: boolean;
+  project?: {
+    name: string;
+    description: string;
+    url: string;
+    language?: string;
+    stars?: number;
+    forks?: number;
+  };
 }
 
 const {
-  title,
-  description = "Muhammad Fiaz - Full-stack developer and open-source maintainer.",
-  image,
+  title = siteConfig.seo.defaultTitle,
+  description = siteConfig.seo.defaultDescription,
+  image = siteConfig.ogImage,
+  type = "website",
+  publishedTime,
+  modifiedTime,
+  centered = false,
+  noindex = false,
+  project,
 } = Astro.props;
+
+// Define analytics IDs for use in scripts
+const gtmId = siteConfig.analytics.googleTagManagerId;
+const gaId = siteConfig.analytics.googleAnalyticsId;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
   <head>
-    <SEO title={title} description={description} image={image} />
+    <SEO
+      title={title}
+      description={description}
+      image={image}
+      type={type}
+      publishedTime={publishedTime}
+      modifiedTime={modifiedTime}
+      noindex={noindex}
+      project={project}
+    />
+
+    <!-- Theme initialization script (prevents flash) -->
     <script is:inline>
       const getThemePreference = () => {
         if (
@@ -31,7 +66,7 @@ const {
             const storage = JSON.parse(localStorage.getItem("theme-storage"));
             return storage.state.theme;
           } catch (e) {
-            return "dark"; // Fallback
+            return "dark";
           }
         }
         return window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -45,12 +80,66 @@ const {
           window.matchMedia("(prefers-color-scheme: dark)").matches);
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
     </script>
+
+    <!-- Google Tag Manager (via Partytown) -->
+    <script type="text/partytown" define:vars={{ gtmId }}>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          "gtm.start": new Date().getTime(),
+          event: "gtm.js",
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", gtmId);
+    </script>
+
+    <!-- Google Analytics (via Partytown) -->
+    <script
+      type="text/partytown"
+      async
+      src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+    <script type="text/partytown" define:vars={{ gaId }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", gaId);
+    </script>
+
     <slot name="head" />
   </head>
-  <body class="bg-background font-sans antialiased">
+
+  <body class="bg-background font-sans antialiased min-h-screen flex flex-col">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+      <iframe
+        src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+        height="0"
+        width="0"
+        style="display:none;visibility:hidden"
+        aria-hidden="true"></iframe>
+    </noscript>
+
     <Navbar client:load />
-    <main class="flex-1 w-full">
-      <slot />
+
+    <main class="flex-1 w-full pt-16">
+      <div
+        class:list={[
+          centered &&
+            "container max-w-4xl mx-auto px-4 py-12 prose prose-lg dark:prose-invert",
+          !centered && "",
+        ]}
+      >
+        <slot />
+      </div>
     </main>
+
+    <Footer client:load />
   </body>
 </html>

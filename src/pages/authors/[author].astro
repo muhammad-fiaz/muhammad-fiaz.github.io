@@ -1,0 +1,97 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { slugify } from "@/lib/utils";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+export async function getStaticPaths() {
+  const posts: CollectionEntry<"blog">[] = await getCollection("blog");
+  const uniqueAuthors: string[] = [
+    ...new Set(posts.map((post: CollectionEntry<"blog">) => post.data.author)),
+  ];
+
+  return uniqueAuthors.map((author) => {
+    return {
+      params: { author: slugify(author) },
+      props: {
+        authorName: author,
+        posts: posts
+          .filter((post) => post.data.author === author)
+          .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+      },
+    };
+  });
+}
+
+interface Props {
+  authorName: string;
+  posts: CollectionEntry<"blog">[];
+}
+
+const { authorName, posts } = Astro.props;
+---
+
+<BaseLayout
+  title={`Posts by ${authorName}`}
+  description={`All blog posts written by ${authorName}`}
+>
+  <div class="container max-w-4xl mx-auto px-4 py-12 sm:py-20">
+    <Button
+      variant="ghost"
+      asChild
+      className="mb-8 pl-0 hover:bg-transparent hover:text-primary gap-2"
+    >
+      <a href="/blog">
+        <ArrowLeft className="h-4 w-4" />
+        Back to Blog
+      </a>
+    </Button>
+
+    <h1 class="text-3xl sm:text-4xl font-bold mb-8">
+      Posts by <span class="text-primary">{authorName}</span>
+    </h1>
+
+    <div class="grid gap-6 sm:gap-8">
+      {
+        posts.map((post) => (
+          <a
+            href={`/blog/${post.id}`}
+            class="group block p-6 sm:p-8 rounded-2xl border border-border/50 bg-card/50 hover:border-primary/50 hover:shadow-lg transition-all duration-300"
+          >
+            <div class="flex flex-col gap-2">
+              <h2 class="text-2xl sm:text-3xl font-semibold group-hover:text-primary transition-colors">
+                {post.data.title}
+              </h2>
+              <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                <time datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                {post.data.tags && (
+                  <>
+                    <span>•</span>
+                    <div class="flex gap-2">
+                      {post.data.tags.map((tag) => (
+                        <span class="bg-primary/10 text-primary px-2 py-0.5 rounded text-xs font-medium">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <p class="text-muted-foreground leading-relaxed mt-2 line-clamp-2">
+                {post.data.description}
+              </p>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</BaseLayout>

@@ -1,18 +1,18 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
-import { Expertise } from "@/components/home/Expertise";
+import { BentoGrid } from "@/components/home/BentoGrid";
 import { Projects } from "@/components/home/Projects";
 import { FAQ } from "@/components/home/FAQ";
+import { siteConfig } from "@/site.config";
 
-const title = "Muhammad Fiaz | Full-stack Developer & Open Source Maintainer";
-const description =
-  "Full-stack developer and open-source maintainer based in Madurai, India. Building developer-first tools, software, and AI applications.";
-const permalink = "https://muhammad-fiaz.github.io/";
+const title = siteConfig.seo.defaultTitle;
+const description = siteConfig.seo.defaultDescription;
 ---
 
-<BaseLayout title={title} description={description} image="https://avatars.githubusercontent.com/u/75434191?v=4">
+<BaseLayout title={title} description={description} image={siteConfig.ogImage}>
+  <!-- Background Pattern -->
   <div class="fixed inset-0 -z-50 pointer-events-none">
     <div
       class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
@@ -24,24 +24,26 @@ const permalink = "https://muhammad-fiaz.github.io/";
     </div>
   </div>
 
-  {/* Use snap scrolling for full-screen sections feel */}
-  <div class="h-auto w-full">
+  <!-- Main Content -->
+  <div class="w-full">
     <Hero client:load />
 
     <About client:visible />
 
-    <Expertise client:visible />
+    <BentoGrid client:visible />
 
     <section
       id="projects"
-      class="min-h-screen flex flex-col justify-center py-24 relative"
+      class="min-h-screen flex flex-col justify-center py-16 sm:py-20 lg:py-24 relative"
     >
-      <div class="container max-w-6xl mx-auto px-4">
-        <div class="text-center mb-16 space-y-4">
-          <h2 class="text-3xl md:text-5xl font-bold tracking-tight">
+      <div class="container max-w-6xl mx-auto px-4 rounded-xl">
+        <div class="text-center mb-12 sm:mb-16 space-y-4">
+          <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight">
             Recent Projects
           </h2>
-          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p
+            class="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4"
+          >
             A collection of projects driven by performance, developer
             experience, and long-term maintainability.
           </p>
