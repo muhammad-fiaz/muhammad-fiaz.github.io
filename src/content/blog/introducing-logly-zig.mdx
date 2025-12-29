@@ -34,21 +34,11 @@ All sinks are thread-safe by default, utilizing efficient synchronization primit
 
 Support for structured logging (JSON) and customizable text formats allows integration with observability platforms like Datadog, Grafana Loki, or simple terminal viewing.
 
-## Benchmarks
+### Performance
 
-Preliminary benchmarks against standard writing methods show minimal overhead.
+Logly is designed to be fast and efficient, with minimal overhead and zero allocation on the hot path.
 
-```
-Benchmark: 1,000,000 log entries
-Hardware: Apple M2 Pro
-
-Implementation | Time (ms) | Ops/sec
--------------- | --------- | -----------
-std.debug.print| 450ms     | ~2.2M
-Logly (Buffered)| 120ms     | ~8.3M
-```
-
-_Note: Benchmarks are synthetic and dependent on I/O buffering strategies._
+You can find the benchmarks in the [release notes](https://github.com/muhammad-fiaz/logly.zig/releases/tag/0.1.0).
 
 ## Getting Started
 
@@ -60,7 +50,7 @@ Logly is available via the Zig package manager.
     .dependencies = .{
         .logly = .{
             .url = "https://github.com/muhammad-fiaz/logly/archive/v0.1.0.tar.gz",
-            .hash = "..."
+            .hash = "logly-0.1.0-kZjLe3E9CgAODAxnYR91gJFNlruu5Kr7EQtfE85XMJIh"
         },
     },
 }
