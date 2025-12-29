@@ -2,9 +2,17 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { ProjectsPageContent } from "@/components/pages/ProjectsPage";
 import { siteConfig } from "@/site.config";
+import { fetchUserRepositories } from "@/lib/github";
 
 const title = "Projects";
 const description = `Explore all ${siteConfig.author.name}'s open-source projects, libraries, and tools. Filter by language, sort by stars, and discover developer utilities, AI/ML applications, and more.`;
+
+const initialRepos = await fetchUserRepositories(
+  siteConfig.github.username
+).catch((e) => {
+  console.error("Failed to fetch repositories server-side:", e);
+  return [];
+});
 ---
 
 <BaseLayout
@@ -24,5 +32,5 @@ const description = `Explore all ${siteConfig.author.name}'s open-source project
     </div>
   </div>
 
-  <ProjectsPageContent client:load />
+  <ProjectsPageContent client:load initialRepositories={initialRepos} />
 </BaseLayout>

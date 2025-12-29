@@ -354,7 +354,11 @@ function getPageNumbers(currentPage: number, totalPages: number): (number | "ell
   return pages;
 }
 
-export function ProjectsPageContent() {
+export function ProjectsPageContent({
+  initialRepositories = []
+}: {
+  initialRepositories?: GitHubRepository[];
+}) {
   const {
     isLoading,
     error,
@@ -378,9 +382,10 @@ export function ProjectsPageContent() {
     repositories
   } = useProjectsStore();
 
+  const repoOverride = repositories.length > 0 ? undefined : initialRepositories;
   const { repos, totalCount, totalPages, hasNextPage, hasPrevPage } =
-    usePaginatedRepositories();
-  const stats = useRepositoryStats();
+    usePaginatedRepositories(repoOverride);
+  const stats = useRepositoryStats(repoOverride);
 
   const [viewMode, setViewMode] = React.useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = React.useState(false);
@@ -389,12 +394,13 @@ export function ProjectsPageContent() {
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const uniqueLanguages = React.useMemo(() => {
+    const source = repoOverride || repositories;
     const langs = new Set<string>();
-    repositories.forEach((repo) => {
+    source.forEach((repo) => {
       if (repo.language) langs.add(repo.language);
     });
     return Array.from(langs).sort();
-  }, [repositories]);
+  }, [repoOverride, repositories]);
 
   const handleSearchChange = (value: string) => {
     setSearchInputValue(value);
@@ -420,6 +426,13 @@ export function ProjectsPageContent() {
 
   React.useEffect(() => {
     async function fetchRepos() {
+      if (initialRepositories.length > 0 && repositories.length === 0) {
+        setRepositories(initialRepositories);
+        setLastFetched(Date.now());
+        setLoading(false);
+        return;
+      }
+
       if (!shouldRefetch() && repositories.length > 0) {
         setLoading(false);
         return;

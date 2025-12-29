@@ -140,10 +140,11 @@ export const useProjectsStore = create<ProjectsState>()(
   )
 );
 
-export function useFilteredRepositories() {
+export function useFilteredRepositories(overrideRepos?: GitHubRepository[]) {
   const { repositories, filters } = useProjectsStore();
+  const sourceRepos = overrideRepos || repositories;
 
-  return repositories.filter((repo) => {
+  return sourceRepos.filter((repo) => {
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       const matchesSearch =
@@ -169,8 +170,8 @@ export function useFilteredRepositories() {
   });
 }
 
-export function useSortedRepositories() {
-  const filteredRepos = useFilteredRepositories();
+export function useSortedRepositories(overrideRepos?: GitHubRepository[]) {
+  const filteredRepos = useFilteredRepositories(overrideRepos);
   const { filters } = useProjectsStore();
 
   return [...filteredRepos].sort((a, b) => {
@@ -215,8 +216,8 @@ export function useSortedRepositories() {
   });
 }
 
-export function usePaginatedRepositories() {
-  const sortedRepos = useSortedRepositories();
+export function usePaginatedRepositories(overrideRepos?: GitHubRepository[]) {
+  const sortedRepos = useSortedRepositories(overrideRepos);
   const { currentPage, perPage } = useProjectsStore();
 
   const startIndex = (currentPage - 1) * perPage;
@@ -231,15 +232,17 @@ export function usePaginatedRepositories() {
   };
 }
 
-export function useRepositoryStats() {
+export function useRepositoryStats(overrideRepos?: GitHubRepository[]) {
   const { repositories } = useProjectsStore();
+  const sourceRepos = overrideRepos || repositories;
 
   const languages: Record<string, number> = {};
   let totalStars = 0;
   let totalForks = 0;
   let totalWatchers = 0;
 
-  for (const repo of repositories) {
+  for (const repo of sourceRepos) {
+
     totalStars += repo.stargazers_count;
     totalForks += repo.forks_count;
     totalWatchers += repo.watchers_count;
