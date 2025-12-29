@@ -150,6 +150,16 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       gtag("config", gaId);
     </script>
 
+    <!-- Google AdSense Meta Tag -->
+    {
+      siteConfig.adsense.enabled && (
+        <meta
+          name="google-adsense-account"
+          content={siteConfig.adsense.clientId}
+        />
+      )
+    }
+
     <!-- Google AdSense -->
     {
       siteConfig.adsense.enabled && (
