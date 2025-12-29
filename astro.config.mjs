@@ -50,7 +50,7 @@ export default defineConfig({
     // Partytown for third-party scripts (Analytics/GTM)
     partytown({
       config: {
-        forward: ["dataLayer.push", "gtag"],
+        forward: ["dataLayer.push", "gtag", "adsbygoogle"],
         debug: false,
       },
     }),
