@@ -12,7 +12,6 @@
     "@astrojs/check": "^0.9.6",
     "@astrojs/markdoc": "^0.15.10",
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.4.2",
     "@astrojs/rss": "^4.0.14",
     "@astrojs/sitemap": "^3.6.0",

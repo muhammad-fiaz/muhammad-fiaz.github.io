@@ -121,7 +121,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
     </script>
 
-    <script is:inline type="text/partytown" define:vars={{ gtmId }}>
+    <script is:inline define:vars={{ gtmId }}>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({
@@ -139,10 +139,9 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
 
     <script
       is:inline
-      type="text/partytown"
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-    <script is:inline type="text/partytown" define:vars={{ gaId }}>
+    <script is:inline define:vars={{ gaId }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -156,7 +155,6 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       siteConfig.adsense.enabled && (
         <script
           is:inline
-          type="text/partytown"
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsense.clientId}`}
           crossorigin="anonymous"

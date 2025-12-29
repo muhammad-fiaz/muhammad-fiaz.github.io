@@ -3,7 +3,6 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import sitemap from "@astrojs/sitemap";
-import partytown from "@astrojs/partytown";
 import markdoc from "@astrojs/markdoc";
 import mdx from "@astrojs/mdx";
 
@@ -45,14 +44,6 @@ export default defineConfig({
         "https://muhammad-fiaz.github.io/logly.zig/sitemap.xml",
      
       ],
-    }),
-    
-    // Partytown for third-party scripts (Analytics/GTM)
-    partytown({
-      config: {
-        forward: ["dataLayer.push", "gtag", "adsbygoogle"],
-        debug: false,
-      },
     }),
     
     markdoc(),
