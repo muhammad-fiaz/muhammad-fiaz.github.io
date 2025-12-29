@@ -60,7 +60,9 @@ export const siteConfig = {
       { name: "Privacy Policy", href: "/privacy-policy" },
       { name: "Terms of Service", href: "/terms-of-service" },
       { name: "Cookie Policy", href: "/cookie-policy" },
-      { name: "Contact", href: "mailto:contact@muhammadfiaz.com" }
+      { name: "Contact", href: "mailto:contact@muhammadfiaz.com" },
+      { name: "RSS Feed", href: "/rss.xml" },
+      { name: "Sitemap", href: "/sitemap-index.xml" },
     ] as Array<{ name: string; href: string }>
   },
 
