@@ -1,22 +1,6 @@
-/**
- * GitHub GraphQL API utility functions for fetching repositories
- * Uses client-side caching to prevent unnecessary API calls and rate limiting
- * Cache duration: 1 hour (configured in src/lib/cache.ts)
- */
-
 import { siteConfig } from "@/site.config";
-import { CACHE_DURATION, CACHE_KEYS } from "@/lib/cache";
+import { getCachedData, setCachedData, CACHE_KEYS, clearCachedData } from "@/lib/indexeddb-cache";
 
-// Cache configuration - uses centralized cache settings
-const CACHE_KEY = CACHE_KEYS.GITHUB_REPOS;
-
-interface CacheData {
-  data: GitHubRepository[];
-  timestamp: number;
-  expiresAt: number;
-}
-
-// Types for GitHub API responses
 export interface GitHubRepository {
   id: number;
   name: string;
@@ -79,7 +63,6 @@ export interface RepositoryStats {
   mostStarred: GitHubRepository | null;
 }
 
-// Language colors for badges
 export const languageColors: Record<string, string> = {
   JavaScript: "#f1e05a",
   TypeScript: "#3178c6",
@@ -104,7 +87,7 @@ export const languageColors: Record<string, string> = {
   Svelte: "#ff3e00",
   Astro: "#ff5d01",
   SCSS: "#c6538c",
-  Markdown: "#083fa1",
+  Markdown: "#083fa1"
 };
 
 export function getLanguageColor(language: string | null): string {
@@ -112,63 +95,61 @@ export function getLanguageColor(language: string | null): string {
   return languageColors[language] || "#6e7681";
 }
 
-// Client-side cache functions
-function getCache(): CacheData | null {
-  if (typeof window === "undefined") return null;
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit = {},
+  retries: number = 3
+): Promise<Response> {
+  let lastError: Error | null = null;
   
-  try {
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (!cached) return null;
-    
-    const parsed: CacheData = JSON.parse(cached);
-    const now = Date.now();
-    
-    // Check if cache is still valid
-    if (now - parsed.timestamp < CACHE_DURATION) {
-      return parsed;
+  for (let i = 0; i < retries; i++) {
+    try {
+      const response = await fetch(url, {
+        ...options,
+        headers: {
+          "Accept": "application/vnd.github.v3+json",
+          ...options.headers
+        }
+      });
+      
+      if (response.ok) {
+        return response;
+      }
+      
+      if (response.status === 403) {
+        const remaining = response.headers.get("X-RateLimit-Remaining");
+        if (remaining === "0") {
+          throw new Error("GitHub API rate limit exceeded. Please try again later.");
+        }
+      }
+      
+      if (response.status >= 500) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+        continue;
+      }
+      
+      throw new Error(`GitHub API error: ${response.status}`);
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error));
+      if (i < retries - 1) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      }
     }
-    
-    // Cache expired
-    localStorage.removeItem(CACHE_KEY);
-    return null;
-  } catch {
-    return null;
   }
-}
-
-function setCache(data: GitHubRepository[]): void {
-  if (typeof window === "undefined") return;
   
-  try {
-    const now = Date.now();
-    const cacheData: CacheData = {
-      data,
-      timestamp: now,
-      expiresAt: now + CACHE_DURATION,
-    };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-  } catch {
-    // Ignore localStorage errors
-  }
+  throw lastError || new Error("Failed to fetch from GitHub API");
 }
 
-/**
- * Fetch all public repositories for a user using REST API with caching
- */
 export async function fetchUserRepositories(
   username: string = siteConfig.github.username,
   forceRefresh: boolean = false
 ): Promise<GitHubRepository[]> {
-  // Check cache first (unless force refresh)
   if (!forceRefresh) {
-    const cached = getCache();
-    if (cached) {
-      console.log("Using cached GitHub repositories");
-      return cached.data;
+    const cached = await getCachedData<GitHubRepository[]>(CACHE_KEYS.GITHUB_REPOS);
+    if (cached && cached.length > 0) {
+      return cached;
     }
   }
-
-  console.log("Fetching GitHub repositories from API...");
   
   const allRepos: GitHubRepository[] = [];
   let page = 1;
@@ -178,24 +159,7 @@ export async function fetchUserRepositories(
     const url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated&direction=desc&type=owner`;
 
     try {
-      const response = await fetch(url, {
-        headers: {
-          Accept: "application/vnd.github.v3+json",
-          "User-Agent": "muhammad-fiaz-portfolio",
-        },
-      });
-
-      if (!response.ok) {
-        // Check rate limit
-        const remaining = response.headers.get("X-RateLimit-Remaining");
-        if (remaining === "0") {
-          console.warn("GitHub API rate limit reached. Using cached data if available.");
-          const cached = getCache();
-          if (cached) return cached.data;
-        }
-        throw new Error(`GitHub API error: ${response.status}`);
-      }
-
+      const response = await fetchWithRetry(url);
       const repos: GitHubRepository[] = await response.json();
 
       if (repos.length === 0) {
@@ -208,53 +172,40 @@ export async function fetchUserRepositories(
         }
       }
     } catch (error) {
-      console.error("Error fetching repositories:", error);
-      // Try to return cached data on error
-      const cached = getCache();
-      if (cached) {
-        console.log("Returning cached data due to API error");
-        return cached.data;
+      const cached = await getCachedData<GitHubRepository[]>(CACHE_KEYS.GITHUB_REPOS);
+      if (cached && cached.length > 0) {
+        return cached;
       }
       throw error;
     }
   }
 
-  // Filter out excluded repos
   const filteredRepos = allRepos.filter(
     (repo) => !siteConfig.github.excludedRepos.includes(repo.name)
   );
 
-  // Cache the results
-  setCache(filteredRepos);
+  await setCachedData(CACHE_KEYS.GITHUB_REPOS, filteredRepos);
   
   return filteredRepos;
 }
 
-/**
- * Fetch user profile information
- */
 export async function fetchUserProfile(
   username: string = siteConfig.github.username
 ): Promise<GitHubUser> {
-  const url = `https://api.github.com/users/${username}`;
-
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/vnd.github.v3+json",
-      "User-Agent": "muhammad-fiaz-portfolio",
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`GitHub API error: ${response.status}`);
+  const cached = await getCachedData<GitHubUser>(CACHE_KEYS.GITHUB_PROFILE);
+  if (cached) {
+    return cached;
   }
 
-  return response.json();
+  const url = `https://api.github.com/users/${username}`;
+  const response = await fetchWithRetry(url);
+  const profile = await response.json();
+  
+  await setCachedData(CACHE_KEYS.GITHUB_PROFILE, profile);
+  
+  return profile;
 }
 
-/**
- * Fetch README content for a repository
- */
 export async function fetchRepoReadme(
   repoName: string,
   username: string = siteConfig.github.username
@@ -264,9 +215,8 @@ export async function fetchRepoReadme(
   try {
     const response = await fetch(url, {
       headers: {
-        Accept: "application/vnd.github.v3.raw",
-        "User-Agent": "muhammad-fiaz-portfolio",
-      },
+        "Accept": "application/vnd.github.v3.raw"
+      }
     });
 
     if (!response.ok) {
@@ -279,9 +229,6 @@ export async function fetchRepoReadme(
   }
 }
 
-/**
- * Calculate repository statistics
- */
 export function calculateStats(repos: GitHubRepository[]): RepositoryStats {
   const languages: Record<string, number> = {};
   let totalStars = 0;
@@ -314,13 +261,10 @@ export function calculateStats(repos: GitHubRepository[]): RepositoryStats {
     totalWatchers,
     languages,
     topLanguage,
-    mostStarred,
+    mostStarred
   };
 }
 
-/**
- * Filter and sort repositories
- */
 export function filterAndSortRepos(
   repos: GitHubRepository[],
   options: {
@@ -338,12 +282,11 @@ export function filterAndSortRepos(
     sort = "stars",
     direction = "desc",
     showForks = true,
-    showArchived = false,
+    showArchived = false
   } = options;
 
   let filtered = repos;
 
-  // Filter by search term
   if (search) {
     const searchLower = search.toLowerCase();
     filtered = filtered.filter(
@@ -354,24 +297,20 @@ export function filterAndSortRepos(
     );
   }
 
-  // Filter by language
   if (language) {
     filtered = filtered.filter(
       (repo) => repo.language?.toLowerCase() === language.toLowerCase()
     );
   }
 
-  // Filter forks
   if (!showForks) {
     filtered = filtered.filter((repo) => !repo.fork);
   }
 
-  // Filter archived
   if (!showArchived) {
     filtered = filtered.filter((repo) => !repo.archived);
   }
 
-  // Sort
   const sortFn = (a: GitHubRepository, b: GitHubRepository): number => {
     let aVal: number | string;
     let bVal: number | string;
@@ -416,9 +355,6 @@ export function filterAndSortRepos(
   return [...filtered].sort(sortFn);
 }
 
-/**
- * Get unique languages from repositories
- */
 export function getUniqueLanguages(repos: GitHubRepository[]): string[] {
   const languages = new Set<string>();
   for (const repo of repos) {
@@ -429,21 +365,15 @@ export function getUniqueLanguages(repos: GitHubRepository[]): string[] {
   return Array.from(languages).sort();
 }
 
-/**
- * Format date for display
- */
 export function formatDate(dateString: string): string {
   const date = new Date(dateString);
   return date.toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
-    day: "numeric",
+    day: "numeric"
   });
 }
 
-/**
- * Format relative time
- */
 export function formatRelativeTime(dateString: string): string {
   const date = new Date(dateString);
   const now = new Date();
@@ -461,9 +391,6 @@ export function formatRelativeTime(dateString: string): string {
   return `${Math.floor(diffInSeconds / 31536000)}y ago`;
 }
 
-/**
- * Format number with abbreviation (e.g., 1.2k)
- */
 export function formatNumber(num: number): string {
   if (num >= 1000000) {
     return `${(num / 1000000).toFixed(1)}M`;
@@ -474,17 +401,11 @@ export function formatNumber(num: number): string {
   return num.toString();
 }
 
-/**
- * Get repository thumbnail URL (Open Graph image)
- */
 export function getRepoThumbnail(fullName: string): string {
   return `https://opengraph.githubassets.com/1/${fullName}`;
 }
 
-/**
- * Clear the GitHub cache (useful for force refresh)
- */
-export function clearGitHubCache(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(CACHE_KEY);
+export async function clearGitHubCache(): Promise<void> {
+  await clearCachedData(CACHE_KEYS.GITHUB_REPOS);
+  await clearCachedData(CACHE_KEYS.GITHUB_PROFILE);
 }

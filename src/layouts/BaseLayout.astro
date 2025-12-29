@@ -9,9 +9,12 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
-  type?: "website" | "article" | "profile";
+  type?: "website" | "article" | "profile" | "blog";
   publishedTime?: string;
   modifiedTime?: string;
+  author?: string;
+  tags?: string[];
+  readingTime?: string;
   centered?: boolean;
   noindex?: boolean;
   project?: {
@@ -22,21 +25,52 @@ interface Props {
     stars?: number;
     forks?: number;
   };
+  blogPost?: {
+    title: string;
+    description: string;
+    publishedTime: string;
+    modifiedTime?: string;
+    author: string;
+    tags: string[];
+    image?: string;
+    readingTime?: string;
+    wordCount?: number;
+  };
+  isAuthorPage?: boolean;
+  isBlogListPage?: boolean;
+  isProjectListPage?: boolean;
+  frontmatter?: Record<string, any>;
 }
 
+const props = Astro.props;
+const frontmatter = props.frontmatter || {};
+
+const rawTitle = frontmatter.title || props.title;
+const title = rawTitle
+  ? `${rawTitle} | ${siteConfig.author.name}`
+  : siteConfig.seo.defaultTitle;
+const description =
+  frontmatter.description ||
+  props.description ||
+  siteConfig.seo.defaultDescription;
+const image = frontmatter.image || props.image || siteConfig.ogImage;
+const type = frontmatter.type || props.type || "website";
+const centered = frontmatter.centered ?? props.centered ?? false;
+
 const {
-  title = siteConfig.seo.defaultTitle,
-  description = siteConfig.seo.defaultDescription,
-  image = siteConfig.ogImage,
-  type = "website",
   publishedTime,
   modifiedTime,
-  centered = false,
+  author,
+  tags,
+  readingTime,
   noindex = false,
   project,
-} = Astro.props;
+  blogPost,
+  isAuthorPage = false,
+  isBlogListPage = false,
+  isProjectListPage = false,
+} = props;
 
-// Define analytics IDs for use in scripts
 const gtmId = siteConfig.analytics.googleTagManagerId;
 const gaId = siteConfig.analytics.googleAnalyticsId;
 ---
@@ -51,11 +85,17 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       type={type}
       publishedTime={publishedTime}
       modifiedTime={modifiedTime}
+      author={author}
+      tags={tags}
+      readingTime={readingTime}
       noindex={noindex}
       project={project}
+      blogPost={blogPost}
+      isAuthorPage={isAuthorPage}
+      isBlogListPage={isBlogListPage}
+      isProjectListPage={isProjectListPage}
     />
 
-    <!-- Theme initialization script (prevents flash) -->
     <script is:inline>
       const getThemePreference = () => {
         if (
@@ -81,8 +121,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       document.documentElement.classList[isDark ? "add" : "remove"]("dark");
     </script>
 
-    <!-- Google Tag Manager (via Partytown) -->
-    <script type="text/partytown" define:vars={{ gtmId }}>
+    <script is:inline type="text/partytown" define:vars={{ gtmId }}>
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({
@@ -98,12 +137,12 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       })(window, document, "script", "dataLayer", gtmId);
     </script>
 
-    <!-- Google Analytics (via Partytown) -->
     <script
+      is:inline
       type="text/partytown"
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-    <script type="text/partytown" define:vars={{ gaId }}>
+    <script is:inline type="text/partytown" define:vars={{ gaId }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -112,11 +151,22 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       gtag("config", gaId);
     </script>
 
+    <!-- Google AdSense (Only loads in specific production modes) -->
+    {
+      import.meta.env.PROD && (
+        <script
+          is:inline
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2040560600290490"
+          crossorigin="anonymous"
+        />
+      )
+    }
+
     <slot name="head" />
   </head>
 
   <body class="bg-background font-sans antialiased min-h-screen flex flex-col">
-    <!-- Google Tag Manager (noscript) -->
     <noscript>
       <iframe
         src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}

@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import { motion } from "framer-motion";
 import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
@@ -18,7 +18,6 @@ export function About() {
           transition={{ duration: 0.7 }}
           className="space-y-6 sm:space-y-8"
         >
-          {/* Section Badge */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -29,7 +28,6 @@ export function About() {
             About Me
           </motion.div>
 
-          {/* Heading */}
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -43,7 +41,6 @@ export function About() {
             </span>
           </motion.h2>
 
-          {/* Description */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -51,29 +48,7 @@ export function About() {
             transition={{ delay: 0.3 }}
             className="space-y-4 sm:space-y-6 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl"
           >
-            <p>
-              I am a{" "}
-              <strong className="text-foreground font-semibold">
-                Full-stack Developer
-              </strong>{" "}
-              and{" "}
-              <strong className="text-foreground font-semibold">
-                AI/ML Engineer
-              </strong>{" "}
-              based in {siteConfig.author.location.country}, architecting software
-              across the entire stack.
-            </p>
-            <p>
-              My toolkit spans from modern frontend frameworks like{" "}
-              <strong className="text-foreground font-semibold">
-                React, Next.js, Astro
-              </strong>{" "}
-              to high-performance backends with{" "}
-              <strong className="text-foreground font-semibold">
-                FastAPI, Python, Rust, and Zig
-              </strong>
-              .
-            </p>
+            <p>{siteConfig.author.bio}</p>
             <p>
               I don't just write code; I build ecosystems. From maintaining
               open-source libraries to developing AI-driven applications, my focus 
@@ -81,7 +56,6 @@ export function About() {
             </p>
           </motion.div>
 
-          {/* CTA Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -90,8 +64,8 @@ export function About() {
             className="flex flex-wrap gap-3 sm:gap-4 pt-4"
           >
             <Button className="rounded-full gap-2 group" asChild>
-              <a href="/works">
-                View My Work
+              <a href="/about">
+                Learn More
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </a>
             </Button>

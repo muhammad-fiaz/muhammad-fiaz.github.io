@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage } from "zustand/middleware";
 import type { GitHubRepository } from "@/lib/github";
 import { CACHE_DURATION } from "@/lib/cache";
 
@@ -16,26 +16,17 @@ interface ProjectsFilters {
 }
 
 interface ProjectsState {
-  // Data
   repositories: GitHubRepository[];
   isLoading: boolean;
   error: string | null;
   lastFetched: number | null;
-
-  // Filters
   filters: ProjectsFilters;
-
-  // Pagination
   currentPage: number;
   perPage: number;
-
-  // Actions
   setRepositories: (repos: GitHubRepository[]) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   setLastFetched: (timestamp: number) => void;
-
-  // Filter Actions
   setSearch: (search: string) => void;
   setLanguage: (language: string) => void;
   setSort: (sort: SortOption) => void;
@@ -44,14 +35,10 @@ interface ProjectsState {
   setShowForks: (show: boolean) => void;
   setShowArchived: (show: boolean) => void;
   resetFilters: () => void;
-
-  // Pagination Actions
   setCurrentPage: (page: number) => void;
   setPerPage: (perPage: number) => void;
   nextPage: () => void;
   prevPage: () => void;
-
-  // Cache check
   shouldRefetch: () => boolean;
 }
 
@@ -61,112 +48,102 @@ const defaultFilters: ProjectsFilters = {
   sort: "stars",
   direction: "desc",
   showForks: true,
-  showArchived: false,
+  showArchived: false
 };
-
-// Cache duration imported from centralized cache config (1 hour)
 
 export const useProjectsStore = create<ProjectsState>()(
   persist(
     (set, get) => ({
-      // Initial state
       repositories: [],
       isLoading: false,
       error: null,
       lastFetched: null,
-
       filters: defaultFilters,
-
       currentPage: 1,
       perPage: 12,
 
-      // Data actions
       setRepositories: (repos) =>
         set({ repositories: repos, error: null, isLoading: false }),
       setLoading: (loading) => set({ isLoading: loading }),
       setError: (error) => set({ error, isLoading: false }),
       setLastFetched: (timestamp) => set({ lastFetched: timestamp }),
 
-      // Filter actions
       setSearch: (search) =>
         set((state) => ({
           filters: { ...state.filters, search },
-          currentPage: 1,
+          currentPage: 1
         })),
       setLanguage: (language) =>
         set((state) => ({
           filters: { ...state.filters, language },
-          currentPage: 1,
+          currentPage: 1
         })),
       setSort: (sort) =>
         set((state) => ({
           filters: { ...state.filters, sort },
-          currentPage: 1,
+          currentPage: 1
         })),
       setSortDirection: (direction) =>
         set((state) => ({
-          filters: { ...state.filters, direction },
+          filters: { ...state.filters, direction }
         })),
       toggleSortDirection: () =>
         set((state) => ({
           filters: {
             ...state.filters,
-            direction: state.filters.direction === "asc" ? "desc" : "asc",
-          },
+            direction: state.filters.direction === "asc" ? "desc" : "asc"
+          }
         })),
       setShowForks: (show) =>
         set((state) => ({
           filters: { ...state.filters, showForks: show },
-          currentPage: 1,
+          currentPage: 1
         })),
       setShowArchived: (show) =>
         set((state) => ({
           filters: { ...state.filters, showArchived: show },
-          currentPage: 1,
+          currentPage: 1
         })),
       resetFilters: () =>
         set({
           filters: defaultFilters,
-          currentPage: 1,
+          currentPage: 1
         }),
 
-      // Pagination actions
       setCurrentPage: (page) => set({ currentPage: page }),
       setPerPage: (perPage) => set({ perPage, currentPage: 1 }),
       nextPage: () =>
         set((state) => ({
-          currentPage: state.currentPage + 1,
+          currentPage: state.currentPage + 1
         })),
       prevPage: () =>
         set((state) => ({
-          currentPage: Math.max(1, state.currentPage - 1),
+          currentPage: Math.max(1, state.currentPage - 1)
         })),
 
-      // Cache check
       shouldRefetch: () => {
         const { lastFetched } = get();
         if (!lastFetched) return true;
         return Date.now() - lastFetched > CACHE_DURATION;
-      },
+      }
     }),
     {
       name: "projects-storage",
+      storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         repositories: state.repositories,
         lastFetched: state.lastFetched,
         filters: state.filters,
-        perPage: state.perPage,
-      }),
+        perPage: state.perPage
+      })
     }
   )
 );
 
-// Selector hooks for computed values
 export function useFilteredRepositories() {
   const { repositories, filters } = useProjectsStore();
 
   return repositories.filter((repo) => {
-    // Search filter
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       const matchesSearch =
@@ -176,17 +153,14 @@ export function useFilteredRepositories() {
       if (!matchesSearch) return false;
     }
 
-    // Language filter
     if (filters.language && repo.language?.toLowerCase() !== filters.language.toLowerCase()) {
       return false;
     }
 
-    // Fork filter
     if (!filters.showForks && repo.fork) {
       return false;
     }
 
-    // Archived filter
     if (!filters.showArchived && repo.archived) {
       return false;
     }
@@ -253,7 +227,7 @@ export function usePaginatedRepositories() {
     totalCount: sortedRepos.length,
     totalPages: Math.ceil(sortedRepos.length / perPage),
     hasNextPage: endIndex < sortedRepos.length,
-    hasPrevPage: currentPage > 1,
+    hasPrevPage: currentPage > 1
   };
 }
 
@@ -285,6 +259,6 @@ export function useRepositoryStats() {
     totalForks,
     totalWatchers,
     languages: sortedLanguages,
-    topLanguage: sortedLanguages[0]?.language || "Unknown",
+    topLanguage: sortedLanguages[0]?.language || "Unknown"
   };
 }

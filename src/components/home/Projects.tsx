@@ -6,12 +6,10 @@ import {
   getLanguageColor,
   formatRelativeTime,
   formatNumber,
-  type GitHubRepository,
+  type GitHubRepository
 } from "@/lib/github";
 import { useProjectsStore } from "@/store/projectsStore";
 import { siteConfig } from "@/site.config";
-
-// UI Components
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,17 +18,15 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
+  CardFooter
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@/components/ui/tooltip";
-
-// Icons
 import {
   Star,
   GitFork,
@@ -38,13 +34,11 @@ import {
   FileText,
   Archive,
   GitPullRequest,
-  ArrowRight,
+  ArrowRight
 } from "lucide-react";
 
-// Number of projects to show on home page
 const HOME_PROJECTS_LIMIT = 6;
 
-// Skeleton Component for Loading State
 function ProjectCardSkeleton() {
   return (
     <Card className="h-full flex flex-col animate-pulse bg-card/50 backdrop-blur-sm rounded-[14px]">
@@ -75,17 +69,14 @@ function ProjectCardSkeleton() {
   );
 }
 
-// Project Card Component
 function ProjectCard({
   repo,
-  index,
+  index
 }: {
   repo: GitHubRepository;
   index: number;
 }) {
   const langColor = getLanguageColor(repo.language);
-
-  // Get docs URL - use homepage if available, otherwise use README
   const docsUrl = repo.homepage || `${repo.html_url}#readme`;
 
   return (
@@ -169,7 +160,6 @@ function ProjectCard({
             )}
           </div>
 
-          {/* Stats Row */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <TooltipProvider>
               <Tooltip>
@@ -201,7 +191,6 @@ function ProjectCard({
           </div>
         </CardContent>
 
-        {/* Action Buttons */}
         <CardFooter className="pt-3 pb-4 px-6 border-t border-border/30 gap-2 flex-wrap">
           <Button
             variant="default"
@@ -233,8 +222,7 @@ function ProjectCard({
               onClick={(e) => e.stopPropagation()}
             >
               <FileText className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Docs</span>
-              <span className="sm:hidden">Docs</span>
+              <span>Docs</span>
             </a>
           </Button>
         </CardFooter>
@@ -243,7 +231,6 @@ function ProjectCard({
   );
 }
 
-// Main Projects Component for Home Page
 export function Projects() {
   const {
     isLoading,
@@ -253,13 +240,11 @@ export function Projects() {
     setError,
     setLastFetched,
     shouldRefetch,
-    repositories,
+    repositories
   } = useProjectsStore();
 
-  // Fetch repositories on mount
   React.useEffect(() => {
     async function fetchRepos() {
-      // If we have cached data and don't need to refetch, just ensure loading is false
       if (!shouldRefetch() && repositories.length > 0) {
         setLoading(false);
         return;
@@ -285,7 +270,6 @@ export function Projects() {
     fetchRepos();
   }, []);
 
-  // Get top projects sorted by stars (excluding forks and archived)
   const topProjects = React.useMemo(() => {
     return repositories
       .filter((repo) => !repo.fork && !repo.archived)
@@ -295,7 +279,6 @@ export function Projects() {
 
   return (
     <div className="space-y-8">
-      {/* Loading State */}
       {isLoading && (
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: HOME_PROJECTS_LIMIT }).map((_, i) => (
@@ -304,7 +287,6 @@ export function Projects() {
         </div>
       )}
 
-      {/* Error State */}
       {error && !isLoading && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
@@ -315,7 +297,6 @@ export function Projects() {
         </motion.div>
       )}
 
-      {/* Projects Grid */}
       {!isLoading && !error && topProjects.length > 0 && (
         <>
           <motion.div
@@ -328,7 +309,6 @@ export function Projects() {
             ))}
           </motion.div>
 
-          {/* View All Projects Button */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -350,7 +330,6 @@ export function Projects() {
         </>
       )}
 
-      {/* Empty State */}
       {!isLoading && !error && topProjects.length === 0 && (
         <motion.div
           initial={{ opacity: 0 }}

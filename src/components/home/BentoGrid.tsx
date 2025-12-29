@@ -9,16 +9,14 @@ import {
 } from "@/lib/wakatime";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Code2,
+
+  BarChart3,
+  Layers,
+  Users,
   Cpu,
   Sparkles,
   GitBranch,
-  Layers,
-  Zap,
-  Users,
   Clock,
-  TrendingUp,
-  BarChart3,
 } from "lucide-react";
 
 // Language Bar Chart Component

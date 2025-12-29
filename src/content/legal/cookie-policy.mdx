@@ -1,17 +1,16 @@
 ---
-layout: ../layouts/BaseLayout.astro
-title: Cookie Policy | Muhammad Fiaz
+title: Cookie Policy
 description: Cookie Policy for the website of Muhammad Fiaz or any organisation related to me like Fiaz Technologies, explaining how cookies are used.
 centered: true
 ---
 
-# Cookie Policy
+import { siteConfig } from "@/site.config";
 
-Last updated: December 28, 2025
+Last updated: December 29, 2025
 
 ## Introduction
 
-Welcome to the website of Muhammad Fiaz or any organisation related to me like Fiaz Technologies.
+Welcome to the website of {siteConfig.name} or any organisation related to me like {siteConfig.organization.name}.
 
 ## What Are Cookies
 
@@ -75,5 +74,5 @@ We may update this Cookie Policy from time to time to reflect changes in our pra
 
 If you have any questions about this Cookie Policy or our use of cookies, please contact us:
 
-- Email: [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com)
-- GitHub: [https://github.com/muhammad-fiaz](https://github.com/muhammad-fiaz)
+- Email: [{siteConfig.author.email}](mailto:{siteConfig.author.email})
+- GitHub: [{siteConfig.social.github}]({siteConfig.social.github})

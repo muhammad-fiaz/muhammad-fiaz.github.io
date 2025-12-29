@@ -9,7 +9,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
+  SheetTrigger
 } from "@/components/ui/sheet";
 import { Heart, Menu, Home, Briefcase, FolderGit2, User, BookOpen } from "lucide-react";
 
@@ -18,7 +18,7 @@ const navItems = [
   { name: "Works", href: "/works", icon: Briefcase },
   { name: "Projects", href: "/projects", icon: FolderGit2 },
   { name: "Blog", href: "/blog", icon: BookOpen },
-  { name: "About", href: "/#about", icon: User },
+  { name: "About", href: "/about", icon: User }
 ];
 
 export function Navbar() {
@@ -26,13 +26,11 @@ export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [currentPath, setCurrentPath] = React.useState("/");
 
-  // Handle scroll for navbar background
   React.useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    // Get current path
     setCurrentPath(window.location.pathname);
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -51,7 +49,6 @@ export function Navbar() {
       )}
     >
       <div className="container flex h-16 items-center justify-between px-4 max-w-7xl mx-auto">
-        {/* Logo */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -66,7 +63,6 @@ export function Navbar() {
           </a>
         </motion.div>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-1">
           {navItems.map((item, index) => {
             const isActive = currentPath === item.href || 
@@ -92,9 +88,7 @@ export function Navbar() {
           })}
         </div>
 
-        {/* Right Side Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Donate Button - Desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -119,10 +113,8 @@ export function Navbar() {
             </Button>
           </motion.div>
 
-          {/* Theme Toggle */}
           <ThemeToggle />
 
-          {/* Mobile Menu */}
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
               <SheetTrigger asChild>
@@ -166,7 +158,6 @@ export function Navbar() {
                   })}
                 </nav>
 
-                {/* Mobile Menu Footer */}
                 <div className="absolute bottom-8 left-6 right-6 space-y-4">
                   <Button
                     className="w-full gap-2 rounded-full"

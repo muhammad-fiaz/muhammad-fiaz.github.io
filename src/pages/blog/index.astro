@@ -2,120 +2,48 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
-import { slugify } from "@/lib/utils";
+import { BlogPage } from "@/components/pages/BlogPage";
+import { siteConfig } from "@/site.config";
 
-const posts: CollectionEntry<"blog">[] = (await getCollection("blog")).sort(
+const allPosts: CollectionEntry<"blog">[] = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 
 const title = "Blog";
-const description = "Thoughts, tutorials, and updates.";
+const description =
+  "Articles about software development, AI/ML, open source, and technology by " +
+  siteConfig.author.name;
 
-// Calculate reading time helper
 function getReadingTime(content: string | undefined): number {
   const wordsPerMinute = 200;
   const wordCount = content?.split(/\s+/).length || 0;
   return Math.ceil(wordCount / wordsPerMinute);
 }
+
+const posts = allPosts.map((post) => ({
+  id: post.id,
+  title: post.data.title,
+  description: post.data.description || "",
+  pubDate: post.data.pubDate.toISOString(),
+  author: post.data.author,
+  tags: post.data.tags || [],
+  readingTime: getReadingTime(post.body),
+}));
+
+const allTags = [...new Set(allPosts.flatMap((post) => post.data.tags || []))];
 ---
 
-<BaseLayout title={title} description={description}>
-  <div class="container max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-20">
-    <!-- Header Section -->
-    <div class="mb-8 sm:mb-10 md:mb-12 space-y-3 sm:space-y-4">
-      <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
-        Blog
-      </h1>
-      <p class="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl">
-        Writing about software development, system design, and the latest tech
-        trends.
-      </p>
+<BaseLayout title={title} description={description} isBlogListPage={true}>
+  <div class="fixed inset-0 -z-50 pointer-events-none">
+    <div
+      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
+    >
     </div>
-
-    <!-- Blog Posts Grid -->
-    <div class="grid gap-4 sm:gap-6 md:gap-8">
-      {
-        posts.map((post) => {
-          const readingTime = getReadingTime(post.body);
-          return (
-            <a
-              href={`/blog/${post.id}`}
-              class="group block p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/50 hover:bg-card/80 hover:shadow-lg transition-all duration-300"
-            >
-              <div class="flex flex-col gap-2 sm:gap-3">
-                <!-- Title -->
-                <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold group-hover:text-primary transition-colors line-clamp-2">
-                  {post.data.title}
-                </h2>
-                
-                <!-- Meta Information -->
-                <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm text-muted-foreground">
-                  <!-- Date -->
-                  <time datetime={post.data.pubDate.toISOString()}>
-                    {post.data.pubDate.toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
-                  </time>
-                  
-                  <!-- Separator -->
-                  <span class="hidden sm:inline">•</span>
-                  
-                  <!-- Reading Time -->
-                  <span class="hidden sm:inline">{readingTime} min read</span>
-                  
-                  <!-- Author (mobile hidden) -->
-                  <span class="hidden md:inline">•</span>
-                  <span class="hidden md:inline">{post.data.author}</span>
-                </div>
-                
-                <!-- Tags -->
-                {post.data.tags && (
-                  <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-1">
-                    {post.data.tags.slice(0, 3).map((tag) => (
-                      <span class="bg-primary/10 text-primary px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs font-medium">
-                        {tag}
-                      </span>
-                    ))}
-                    {post.data.tags.length > 3 && (
-                      <span class="bg-muted text-muted-foreground px-1.5 sm:px-2 py-0.5 rounded text-[10px] sm:text-xs">
-                        +{post.data.tags.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                )}
-                
-                <!-- Description -->
-                <p class="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed mt-1 sm:mt-2 line-clamp-2 sm:line-clamp-3">
-                  {post.data.description}
-                </p>
-                
-                <!-- Read More Link -->
-                <div class="mt-2 sm:mt-3">
-                  <span class="text-xs sm:text-sm font-medium text-primary group-hover:underline inline-flex items-center gap-1">
-                    Read more
-                    <svg class="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </div>
-              </div>
-            </a>
-          );
-        })
-      }
-
-      {posts.length === 0 && (
-        <div class="text-center py-12 sm:py-16 md:py-20 text-muted-foreground">
-          <div class="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 rounded-full bg-muted/50 flex items-center justify-center">
-            <svg class="h-6 w-6 sm:h-8 sm:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-            </svg>
-          </div>
-          <p class="text-sm sm:text-base">No posts found yet. Check back later!</p>
-        </div>
-      )}
+    <div
+      class="absolute top-0 left-0 right-0 h-125 bg-linear-to-b from-primary/5 to-transparent"
+    >
     </div>
   </div>
+
+  <BlogPage client:load posts={posts} allTags={allTags} />
 </BaseLayout>

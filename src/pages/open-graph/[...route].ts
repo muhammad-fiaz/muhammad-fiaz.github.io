@@ -1,5 +1,15 @@
 import { OGImageRoute } from 'astro-og-canvas';
 import { siteConfig } from '@/site.config';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog');
+const blogPages = blogPosts.reduce((acc, post) => {
+  acc[`blog/${post.id}`] = {
+    title: post.data.title,
+    description: post.data.description,
+  };
+  return acc;
+}, {} as Record<string, { title: string; description: string }>);
 
 export const { getStaticPaths, GET } = OGImageRoute({
   param: 'route',
@@ -16,8 +26,9 @@ export const { getStaticPaths, GET } = OGImageRoute({
       title: 'Experience',
       description: 'My professional journey and work history.',
     },
+    ...blogPages,
   },
-  getImageOptions: (path, page) => ({
+  getImageOptions: (_path, page) => ({
     title: page.title,
     description: page.description,
     logo: {

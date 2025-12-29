@@ -3,14 +3,19 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 import { ProjectsPageContent } from "@/components/pages/ProjectsPage";
 import { siteConfig } from "@/site.config";
 
-const title = "Projects | Muhammad Fiaz - All GitHub Repositories";
+const title = "Projects";
 const description = `Explore all ${siteConfig.author.name}'s open-source projects, libraries, and tools. Filter by language, sort by stars, and discover developer utilities, AI/ML applications, and more.`;
 ---
 
-<BaseLayout title={title} description={description} image={siteConfig.ogImage}>
+<BaseLayout
+  title={title}
+  description={description}
+  image={siteConfig.ogImage}
+  isProjectListPage={true}
+>
   <div class="fixed inset-0 -z-50 pointer-events-none">
     <div
-      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
+      class="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear_gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
     >
     </div>
     <div

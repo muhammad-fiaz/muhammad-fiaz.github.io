@@ -1,4 +1,4 @@
-import * as React from "react";
+
 import { motion } from "framer-motion";
 import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";

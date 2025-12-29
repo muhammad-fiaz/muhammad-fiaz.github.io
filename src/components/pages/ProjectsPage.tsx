@@ -6,16 +6,14 @@ import {
   getLanguageColor,
   formatRelativeTime,
   formatNumber,
-  type GitHubRepository,
+  type GitHubRepository
 } from "@/lib/github";
 import {
   useProjectsStore,
   usePaginatedRepositories,
-  useRepositoryStats,
+  useRepositoryStats
 } from "@/store/projectsStore";
 import { siteConfig } from "@/site.config";
-
-// UI Components
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -25,14 +23,14 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
+  CardFooter
 } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Switch } from "@/components/ui/switch";
@@ -41,7 +39,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@/components/ui/tooltip";
 import {
   Pagination,
@@ -50,15 +48,12 @@ import {
   PaginationItem,
   PaginationLink,
   PaginationNext,
-  PaginationPrevious,
+  PaginationPrevious
 } from "@/components/ui/pagination";
-
-// Icons
 import {
   Search,
   Star,
   GitFork,
-  Eye,
   ExternalLink,
   RefreshCw,
   Filter,
@@ -73,13 +68,12 @@ import {
   Github,
   Archive,
   GitPullRequest,
-  FileText,
+  FileText
 } from "lucide-react";
 
-// Skeleton Component for Loading State
 function ProjectCardSkeleton() {
   return (
-    <Card className="h-full flex flex-col animate-pulse">
+    <Card className="h-full flex flex-col animate-pulse bg-card/50 backdrop-blur-sm rounded-[14px]">
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start gap-2">
           <Skeleton className="h-6 w-3/4" />
@@ -107,12 +101,11 @@ function ProjectCardSkeleton() {
   );
 }
 
-// Stats Card Component
 function StatsCard({
   icon: Icon,
   label,
   value,
-  gradient,
+  gradient
 }: {
   icon: React.ElementType;
   label: string;
@@ -145,17 +138,14 @@ function StatsCard({
   );
 }
 
-// Project Card Component
 function ProjectCard({
   repo,
-  index,
+  index
 }: {
   repo: GitHubRepository;
   index: number;
 }) {
   const langColor = getLanguageColor(repo.language);
-  
-  // Get docs URL - use homepage if available, otherwise use README
   const docsUrl = repo.homepage || `${repo.html_url}#readme`;
 
   return (
@@ -168,7 +158,7 @@ function ProjectCard({
     >
       <Card
         className={cn(
-          "h-full flex flex-col transition-all duration-300",
+          "h-full flex flex-col transition-all duration-300 rounded-[14px]",
           "hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1",
           "border-border/50 bg-card/50 backdrop-blur-sm",
           "ring-offset-background",
@@ -239,7 +229,6 @@ function ProjectCard({
             )}
           </div>
           
-          {/* Stats Row */}
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
             <TooltipProvider>
               <Tooltip>
@@ -271,7 +260,6 @@ function ProjectCard({
           </div>
         </CardContent>
 
-        {/* Action Buttons */}
         <CardFooter className="pt-3 pb-4 px-6 border-t border-border/30 gap-2 flex-wrap">
           <Button
             variant="default"
@@ -303,8 +291,7 @@ function ProjectCard({
               onClick={(e) => e.stopPropagation()}
             >
               <FileText className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">Docs</span>
-              <span className="sm:hidden">Docs</span>
+              <span>Docs</span>
             </a>
           </Button>
         </CardFooter>
@@ -313,7 +300,6 @@ function ProjectCard({
   );
 }
 
-// Empty State Component
 function EmptyState({ onReset }: { onReset: () => void }) {
   return (
     <motion.div
@@ -337,24 +323,20 @@ function EmptyState({ onReset }: { onReset: () => void }) {
   );
 }
 
-// Generate page numbers for pagination
 function getPageNumbers(currentPage: number, totalPages: number): (number | "ellipsis")[] {
   const pages: (number | "ellipsis")[] = [];
   
   if (totalPages <= 7) {
-    // Show all pages if 7 or fewer
     for (let i = 1; i <= totalPages; i++) {
       pages.push(i);
     }
   } else {
-    // Always show first page
     pages.push(1);
     
     if (currentPage > 3) {
       pages.push("ellipsis");
     }
     
-    // Show pages around current
     const start = Math.max(2, currentPage - 1);
     const end = Math.min(totalPages - 1, currentPage + 1);
     
@@ -366,14 +348,12 @@ function getPageNumbers(currentPage: number, totalPages: number): (number | "ell
       pages.push("ellipsis");
     }
     
-    // Always show last page
     pages.push(totalPages);
   }
   
   return pages;
 }
 
-// Main Projects Page Component
 export function ProjectsPageContent() {
   const {
     isLoading,
@@ -395,7 +375,7 @@ export function ProjectsPageContent() {
     setCurrentPage,
     setPerPage,
     shouldRefetch,
-    repositories,
+    repositories
   } = useProjectsStore();
 
   const { repos, totalCount, totalPages, hasNextPage, hasPrevPage } =
@@ -408,7 +388,6 @@ export function ProjectsPageContent() {
   const [searchInputValue, setSearchInputValue] = React.useState(filters.search);
   const searchTimeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
-  // Get unique languages
   const uniqueLanguages = React.useMemo(() => {
     const langs = new Set<string>();
     repositories.forEach((repo) => {
@@ -417,7 +396,6 @@ export function ProjectsPageContent() {
     return Array.from(langs).sort();
   }, [repositories]);
 
-  // Debounced search handler
   const handleSearchChange = (value: string) => {
     setSearchInputValue(value);
     setIsSearching(true);
@@ -432,7 +410,6 @@ export function ProjectsPageContent() {
     }, 300);
   };
 
-  // Cleanup timeout on unmount
   React.useEffect(() => {
     return () => {
       if (searchTimeoutRef.current) {
@@ -441,10 +418,8 @@ export function ProjectsPageContent() {
     };
   }, []);
 
-  // Fetch repositories on mount
   React.useEffect(() => {
     async function fetchRepos() {
-      // If we have cached data and don't need to refetch, just ensure loading is false
       if (!shouldRefetch() && repositories.length > 0) {
         setLoading(false);
         return;
@@ -484,7 +459,6 @@ export function ProjectsPageContent() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         
@@ -503,7 +477,6 @@ export function ProjectsPageContent() {
             </p>
           </motion.div>
 
-          {/* Stats Cards */}
           {!isLoading && !error && (
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
               <StatsCard
@@ -535,13 +508,10 @@ export function ProjectsPageContent() {
         </div>
       </section>
 
-      {/* Filters & Content Section */}
       <section className="pb-16 sm:pb-20">
         <div className="container max-w-7xl mx-auto px-4">
-          {/* Search & Filter Bar */}
-          <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-border/50 p-4 mb-6">
+          <div className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4 sm:p-6 mb-6">
             <div className="flex flex-col gap-4">
-              {/* Main Search Row */}
               <div className="flex flex-col sm:flex-row gap-3">
                 <div className="relative flex-1">
                   <Search className={cn(
@@ -654,7 +624,6 @@ export function ProjectsPageContent() {
                 </div>
               </div>
 
-              {/* Advanced Filters */}
               <AnimatePresence>
                 {showFilters && (
                   <motion.div
@@ -702,7 +671,6 @@ export function ProjectsPageContent() {
             </div>
           </div>
 
-          {/* Results Info */}
           <div className="flex items-center justify-between mb-6">
             <span className="text-sm text-muted-foreground">
               {isLoading ? (
@@ -752,7 +720,6 @@ export function ProjectsPageContent() {
             </div>
           </div>
 
-          {/* Error State */}
           {error && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -771,7 +738,6 @@ export function ProjectsPageContent() {
             </motion.div>
           )}
 
-          {/* Loading State */}
           {(isLoading || isSearching) && (
             <div
               className={cn(
@@ -787,12 +753,10 @@ export function ProjectsPageContent() {
             </div>
           )}
 
-          {/* Empty State */}
           {!isLoading && !isSearching && !error && repos.length === 0 && (
             <EmptyState onReset={resetFilters} />
           )}
 
-          {/* Projects Grid */}
           {!isLoading && !isSearching && !error && repos.length > 0 && (
             <>
               <motion.div
@@ -811,7 +775,6 @@ export function ProjectsPageContent() {
                 </AnimatePresence>
               </motion.div>
 
-              {/* Shadcn Pagination */}
               {totalPages > 1 && (
                 <div className="mt-8 sm:mt-12 pt-6 border-t">
                   <Pagination>
@@ -867,7 +830,6 @@ export function ProjectsPageContent() {
             </>
           )}
 
-          {/* GitHub Profile Link */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

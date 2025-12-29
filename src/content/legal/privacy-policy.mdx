@@ -1,17 +1,18 @@
 ---
-layout: ../layouts/BaseLayout.astro
-title: Privacy Policy | Muhammad Fiaz
+title: Privacy Policy
 description: Privacy Policy for the website of Muhammad Fiaz or any organisation related to me like Fiaz Technologies, covering data collection and usage.
 centered: true
 ---
 
+import { siteConfig } from "@/site.config";
+
 # Privacy Policy
 
-Last updated: December 28, 2025
+Last updated: December 29, 2025
 
 ## Introduction
 
-Welcome to the website of Muhammad Fiaz or any organisation related to me like Fiaz Technologies ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.
+Welcome to the website of {siteConfig.name} or any organisation related to me like {siteConfig.organization.name} ("we," "our," or "us"). We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website.
 
 ## Information We Collect
 
@@ -88,7 +89,7 @@ Depending on your location, you may have the following rights regarding your per
 - **Portability**: Request transfer of your data to another service
 - **Opt-out**: Opt out of marketing communications or certain data processing
 
-To exercise these rights, please contact us at [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com).
+To exercise these rights, please contact us at [{siteConfig.author.email}](mailto:{siteConfig.author.email}).
 
 ## Children's Privacy
 
@@ -102,5 +103,5 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 If you have any questions about this Privacy Policy, please contact us:
 
-- Email: [contact@muhammadfiaz.com](mailto:contact@muhammadfiaz.com)
-- GitHub: [https://github.com/muhammad-fiaz](https://github.com/muhammad-fiaz)
+- Email: [{siteConfig.author.email}](mailto:{siteConfig.author.email})
+- GitHub: [{siteConfig.social.github}]({siteConfig.social.github})

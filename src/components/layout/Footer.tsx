@@ -7,7 +7,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from "@/components/ui/tooltip";
 import {
   Github,
@@ -19,70 +19,58 @@ import {
   ExternalLink,
   Twitter,
   Link2,
-  GraduationCap,
+  GraduationCap
 } from "lucide-react";
 
-// Social links with icons
 const socialLinks = [
   {
     name: "GitHub",
     href: siteConfig.social.github,
     icon: Github,
-    label: "Follow on GitHub",
+    label: "Follow on GitHub"
   },
   {
     name: "LinkedIn",
     href: siteConfig.social.linkedin,
     icon: Linkedin,
-    label: "Connect on LinkedIn",
+    label: "Connect on LinkedIn"
   },
   {
     name: "X / Twitter",
     href: siteConfig.social.twitter,
     icon: Twitter,
-    label: "Follow on X",
+    label: "Follow on X"
   },
   {
     name: "Medium",
     href: siteConfig.social.medium,
     icon: BookOpenText,
-    label: "Read on Medium",
+    label: "Read on Medium"
   },
   {
     name: "Hashnode",
     href: siteConfig.social.hashnode,
     icon: Hash,
-    label: "Read on Hashnode",
+    label: "Read on Hashnode"
   },
   {
     name: "ORCID",
     href: siteConfig.social.orcid,
     icon: GraduationCap,
-    label: "View ORCID Profile",
+    label: "View ORCID Profile"
   },
   {
     name: "Linktree",
     href: siteConfig.social.linktree,
     icon: Link2,
-    label: "All Links",
-  },
+    label: "All Links"
+  }
 ];
 
-// Navigation links
-const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Works", href: "/works" },
-  { name: "Projects", href: "/projects" },
-  { name: "Blog", href: "/blog" },
-  { name: "About", href: "/#about" },
-];
-
-// Legal links
-const legalLinks = [
-  { name: "Privacy Policy", href: "/privacy-policy" },
-  { name: "Terms of Service", href: "/terms-of-service" },
-  { name: "Cookie Policy", href: "/cookie-policy" },
-];
+const navLinks = siteConfig.navigation.main;
+const legalLinks = siteConfig.navigation.footer.filter(
+  (link) => !link.href.startsWith("mailto:")
+);
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -90,9 +78,7 @@ export function Footer() {
   return (
     <footer className="border-t bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
       <div className="container max-w-7xl mx-auto px-4 py-12">
-        {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
-          {/* Brand & Description */ }
           <div className="space-y-4">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -111,7 +97,6 @@ export function Footer() {
             </motion.div>
           </div>
 
-          {/* Navigation */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -135,7 +120,6 @@ export function Footer() {
             </motion.div>
           </div>
 
-          {/* Contact */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -169,7 +153,6 @@ export function Footer() {
             </motion.div>
           </div>
 
-          {/* Legal */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -196,9 +179,7 @@ export function Footer() {
 
         <Separator className="mb-8" />
 
-        {/* Bottom Section */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-6">
-          {/* Social Links */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -232,7 +213,6 @@ export function Footer() {
             </TooltipProvider>
           </motion.div>
 
-          {/* Support & Copyright */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}

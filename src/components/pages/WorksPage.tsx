@@ -6,11 +6,9 @@ import {
   getLanguageColor,
   formatRelativeTime,
   formatNumber,
-  type GitHubRepository,
+  type GitHubRepository
 } from "@/lib/github";
 import { siteConfig } from "@/site.config";
-
-// UI Components
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -19,11 +17,9 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
+  CardFooter
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Icons
 import {
   Star,
   GitFork,
@@ -35,10 +31,9 @@ import {
   Sparkles,
   Code2,
   BookOpen,
-  Zap,
+  Zap
 } from "lucide-react";
 
-// Loading Skeleton for Featured Card
 function FeaturedCardSkeleton() {
   return (
     <div className="rounded-2xl border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
@@ -64,47 +59,17 @@ function FeaturedCardSkeleton() {
   );
 }
 
-// Regular Card Skeleton
-function WorkCardSkeleton() {
-  return (
-    <Card className="h-full flex flex-col">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-start gap-2">
-          <Skeleton className="h-6 w-3/4" />
-          <Skeleton className="h-4 w-4 rounded-full" />
-        </div>
-        <Skeleton className="h-4 w-full mt-3" />
-        <Skeleton className="h-4 w-4/5 mt-1" />
-      </CardHeader>
-      <CardContent className="flex-1 pt-2">
-        <div className="flex flex-wrap gap-2">
-          <Skeleton className="h-5 w-16 rounded-full" />
-          <Skeleton className="h-5 w-20 rounded-full" />
-        </div>
-      </CardContent>
-      <CardFooter className="border-t border-border/30 mx-6 px-0 pt-4">
-        <div className="flex gap-4 w-full">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-4 w-20 ml-auto" />
-        </div>
-      </CardFooter>
-    </Card>
-  );
-}
 
-// Featured Project Card with Thumbnail
+
 function FeaturedProjectCard({
   repo,
-  index,
+  index
 }: {
   repo: GitHubRepository;
   index: number;
 }) {
   const langColor = getLanguageColor(repo.language);
   const isEven = index % 2 === 0;
-  
-  // Generate Open Graph image URL for the repository
   const thumbnailUrl = `https://opengraph.githubassets.com/1/${repo.full_name}`;
 
   return (
@@ -126,7 +91,6 @@ function FeaturedProjectCard({
             !isEven && "md:grid-cols-[1fr_1fr] md:direction-rtl"
           )}
         >
-          {/* Content Side */}
           <div
             className={cn(
               "p-6 sm:p-8 lg:p-10 flex flex-col justify-center md:direction-ltr",
@@ -160,7 +124,6 @@ function FeaturedProjectCard({
               {repo.description || "No description available"}
             </p>
 
-            {/* Stats */}
             <div className="flex flex-wrap items-center gap-4 mb-6 text-sm">
               <div className="flex items-center gap-1.5 text-muted-foreground">
                 <Star className="h-4 w-4 text-yellow-500" />
@@ -183,7 +146,6 @@ function FeaturedProjectCard({
               </div>
             </div>
 
-            {/* Topics */}
             {repo.topics && repo.topics.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-6">
                 {repo.topics.slice(0, 5).map((topic) => (
@@ -198,7 +160,6 @@ function FeaturedProjectCard({
               </div>
             )}
 
-            {/* Actions */}
             <div className="flex flex-wrap gap-3">
               <Button className="rounded-full gap-2 group/btn" asChild>
                 <a
@@ -229,7 +190,6 @@ function FeaturedProjectCard({
             </div>
           </div>
 
-          {/* Thumbnail Side */}
           <div
             className={cn(
               "relative bg-gradient-to-br flex items-center justify-center min-h-[250px] md:min-h-[350px] md:direction-ltr overflow-hidden p-4",
@@ -238,7 +198,6 @@ function FeaturedProjectCard({
                 : "from-secondary/5 via-secondary/10 to-primary/5 order-1"
             )}
           >
-            {/* Repository Thumbnail - contains/fits in container */}
             <div className="relative w-full h-full flex items-center justify-center group-hover:scale-[1.02] transition-transform duration-500">
               <img
                 src={thumbnailUrl}
@@ -246,13 +205,11 @@ function FeaturedProjectCard({
                 className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-xl"
                 loading="lazy"
                 onError={(e) => {
-                  // Fallback to a code icon if image fails to load
                   e.currentTarget.style.display = 'none';
                   const fallback = e.currentTarget.nextElementSibling;
                   if (fallback) (fallback as HTMLElement).style.display = 'flex';
                 }}
               />
-              {/* Fallback icon (hidden by default) */}
               <div className="hidden flex-col items-center justify-center text-center w-full h-full">
                 <div className="rounded-2xl bg-background/80 backdrop-blur-sm border border-border/50 p-6 shadow-xl">
                   <Code2 className="h-16 w-16 text-primary" />
@@ -269,10 +226,9 @@ function FeaturedProjectCard({
   );
 }
 
-// Regular Work Card
 function WorkCard({
   repo,
-  index,
+  index
 }: {
   repo: GitHubRepository;
   index: number;
@@ -294,7 +250,7 @@ function WorkCard({
       >
         <Card
           className={cn(
-            "h-full flex flex-col transition-all duration-300",
+            "h-full flex flex-col transition-all duration-300 rounded-[14px]",
             "hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1",
             "border-border/50 bg-card/50 backdrop-blur-sm",
             "hover:border-primary/50"
@@ -354,13 +310,11 @@ function WorkCard({
   );
 }
 
-// Main Works Page Component
 export function WorksPageContent() {
   const [repositories, setRepositories] = React.useState<GitHubRepository[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
-  // Fetch repositories on mount
   React.useEffect(() => {
     async function fetchRepos() {
       try {
@@ -378,16 +332,13 @@ export function WorksPageContent() {
     fetchRepos();
   }, []);
 
-  // Get featured projects (highest stars, part of featured list or top by stars)
   const featuredRepos = React.useMemo(() => {
     const featuredNames = siteConfig.github.featuredRepos;
     
-    // First try to get repos from the featured list
     const fromFeaturedList = repositories
       .filter((repo) => featuredNames.includes(repo.name))
       .sort((a, b) => b.stargazers_count - a.stargazers_count);
     
-    // If not enough, get top starred repos
     if (fromFeaturedList.length < 3) {
       const topStarred = repositories
         .filter((repo) => !repo.fork && !featuredNames.includes(repo.name))
@@ -399,7 +350,6 @@ export function WorksPageContent() {
     return fromFeaturedList;
   }, [repositories]);
 
-  // Get recent popular projects (recently updated + good stars, not featured)
   const recentPopularProjects = React.useMemo(() => {
     const featuredNames = siteConfig.github.featuredRepos;
     const featuredIds = featuredRepos.map(r => r.id);
@@ -407,7 +357,6 @@ export function WorksPageContent() {
     return repositories
       .filter((repo) => !repo.fork && !featuredIds.includes(repo.id) && !featuredNames.includes(repo.name))
       .sort((a, b) => {
-        // Sort by a combination of recency and popularity
         const aScore = a.stargazers_count + (new Date(a.updated_at).getTime() / 1000000000);
         const bScore = b.stargazers_count + (new Date(b.updated_at).getTime() / 1000000000);
         return bScore - aScore;
@@ -417,7 +366,6 @@ export function WorksPageContent() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
       <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
 
@@ -447,10 +395,8 @@ export function WorksPageContent() {
         </div>
       </section>
 
-      {/* Featured Projects */}
       <section className="pb-16 sm:pb-20">
         <div className="container max-w-6xl mx-auto px-4">
-          {/* Loading State */}
           {isLoading && (
             <div className="space-y-8 mb-16">
               <FeaturedCardSkeleton />
@@ -458,7 +404,6 @@ export function WorksPageContent() {
             </div>
           )}
 
-          {/* Error State */}
           {error && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -471,14 +416,12 @@ export function WorksPageContent() {
 
           {!isLoading && !error && (
             <>
-              {/* Featured Projects */}
               <div className="space-y-8 mb-16">
                 {featuredRepos.map((repo, index) => (
                   <FeaturedProjectCard key={repo.id} repo={repo} index={index} />
                 ))}
               </div>
 
-              {/* More Projects Section */}
               {recentPopularProjects.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
@@ -512,7 +455,6 @@ export function WorksPageContent() {
             </>
           )}
 
-          {/* CTA Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
