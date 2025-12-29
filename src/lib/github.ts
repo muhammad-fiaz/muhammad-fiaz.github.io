@@ -108,9 +108,6 @@ async function fetchWithRetry(
         ...options,
         headers: {
           "Accept": "application/vnd.github.v3+json",
-          ...(typeof window === "undefined" && import.meta.env.GITHUB_TOKEN
-            ? { Authorization: `Bearer ${import.meta.env.GITHUB_TOKEN}` }
-            : {}),
           ...options.headers
         }
       });
