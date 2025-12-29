@@ -48,6 +48,11 @@ export const siteConfig = {
     googleTagManagerId: "GTM-P4M9T8ZR"
   },
 
+  adsense: {
+    enabled: true, 
+    clientId: "ca-pub-2040560600290490"
+  },
+
   navigation: {
     main: [
       { name: "Home", href: "/" },

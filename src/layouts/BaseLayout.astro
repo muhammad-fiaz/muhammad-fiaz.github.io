@@ -151,13 +151,13 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       gtag("config", gaId);
     </script>
 
-    <!-- Google AdSense (Only loads in specific production modes) -->
+    <!-- Google AdSense -->
     {
-      import.meta.env.PROD && (
+      siteConfig.adsense.enabled && (
         <script
           is:inline
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2040560600290490"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsense.clientId}`}
           crossorigin="anonymous"
         />
       )
