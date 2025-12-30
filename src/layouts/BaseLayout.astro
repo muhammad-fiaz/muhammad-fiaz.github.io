@@ -176,7 +176,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
   </head>
 
   <body
-    class="bg-background font-sans antialiased min-h-screen flex flex-col overflow-x-hidden"
+    class="bg-background font-sans antialiased min-h-screen overflow-x-hidden"
   >
     <noscript>
       <iframe
@@ -187,20 +187,22 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
         aria-hidden="true"></iframe>
     </noscript>
 
-    <Navbar client:load />
+    <div id="app-wrapper" class="relative flex flex-col min-h-screen">
+      <Navbar client:load />
 
-    <main class="flex-1 w-full pt-16">
-      <div
-        class:list={[
-          centered &&
-            "container max-w-4xl mx-auto px-4 py-12 prose prose-lg dark:prose-invert",
-          !centered && "",
-        ]}
-      >
-        <slot />
-      </div>
-    </main>
+      <main class="flex-1 w-full pt-16">
+        <div
+          class:list={[
+            centered &&
+              "container max-w-4xl mx-auto px-4 py-12 prose prose-lg dark:prose-invert",
+            !centered && "",
+          ]}
+        >
+          <slot />
+        </div>
+      </main>
 
-    <Footer client:load />
+      <Footer client:load />
+    </div>
   </body>
 </html>

@@ -20,7 +20,9 @@ const { Content } = await render(entry);
   frontmatter={entry.data}
   centered={true}
 >
-  <div class="mx-auto max-w-3xl text-left">
+  <div
+    class="container w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-left"
+  >
     <Content />
   </div>
 </BaseLayout>

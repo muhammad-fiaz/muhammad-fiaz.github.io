@@ -4,7 +4,7 @@ import { Home, Search } from "lucide-react";
 
 export function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] text-center px-4 sm:px-6">
+    <div className="container w-full max-w-6xl mx-auto flex flex-col items-center justify-center min-h-[80vh] text-center px-4 sm:px-6 lg:px-8">
       {/* Animated background elements */}
       <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/5 rounded-full blur-3xl" />

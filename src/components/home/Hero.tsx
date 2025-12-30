@@ -130,7 +130,7 @@ export function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-4xl mx-auto flex flex-col items-center text-center"
+        className="w-full max-w-4xl mx-auto flex flex-col items-center text-center px-4 sm:px-6 lg:px-8"
       >
         {/* Profile Image */}
         <motion.div variants={imageVariants} whileHover="hover" className="mb-6 sm:mb-8">

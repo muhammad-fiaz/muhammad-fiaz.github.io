@@ -278,7 +278,7 @@ export function Projects() {
   }, [repositories]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 w-full">
       {isLoading && (
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: HOME_PROJECTS_LIMIT }).map((_, i) => (

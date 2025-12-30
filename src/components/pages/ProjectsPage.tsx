@@ -522,7 +522,7 @@ export function ProjectsPageContent({
       </section>
 
       <section className="pb-16 sm:pb-20">
-        <div className="container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4 sm:p-6 mb-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-3">
