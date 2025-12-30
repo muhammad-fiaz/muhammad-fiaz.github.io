@@ -142,49 +142,55 @@ async function fetchWithRetry(
 
 // Helper to get raw server cache with metadata
 async function getServerCacheRaw(key: string): Promise<{ data: any; expiresAt: number } | null> {
-  if (typeof window === "undefined") {
-    try {
-      const fs = await import("node:fs/promises");
-      const path = await import("node:path");
-      const cacheDir = path.resolve(process.cwd(), ".cache");
-      const cacheFile = path.join(cacheDir, `${key}.json`);
-
-      try {
-        await fs.access(cacheFile);
-      } catch {
-        return null; // File doesn't exist
-      }
-
-      const fileContent = await fs.readFile(cacheFile, "utf-8");
-      const entry = JSON.parse(fileContent);
-      return entry; 
-    } catch (error) {
-      // Ignore errors (file not found, corrupt, etc)
-      return null;
-    }
+  // Only run on server - using import.meta.env.SSR for proper tree-shaking
+  if (!import.meta.env.SSR) {
+    return null;
   }
-  return null;
+  
+  try {
+    // Dynamic import only on server
+    const fs = await import("node:fs/promises");
+    const path = await import("node:path");
+    const cacheDir = path.resolve(process.cwd(), ".cache");
+    const cacheFile = path.join(cacheDir, `${key}.json`);
+
+    try {
+      await fs.access(cacheFile);
+    } catch {
+      return null; // File doesn't exist
+    }
+
+    const fileContent = await fs.readFile(cacheFile, "utf-8");
+    const entry = JSON.parse(fileContent);
+    return entry; 
+  } catch (error) {
+    // Ignore errors (file not found, corrupt, etc)
+    return null;
+  }
 }
 
 async function setServerCache(key: string, data: any): Promise<void> {
-  if (typeof window === "undefined") {
-    try {
-      const fs = await import("node:fs/promises");
-      const path = await import("node:path");
-      const cacheDir = path.resolve(process.cwd(), ".cache");
-      const cacheFile = path.join(cacheDir, `${key}.json`);
+  // Only run on server - using import.meta.env.SSR for proper tree-shaking
+  if (!import.meta.env.SSR) {
+    return;
+  }
+  
+  try {
+    const fs = await import("node:fs/promises");
+    const path = await import("node:path");
+    const cacheDir = path.resolve(process.cwd(), ".cache");
+    const cacheFile = path.join(cacheDir, `${key}.json`);
 
-      await fs.mkdir(cacheDir, { recursive: true });
-      await fs.writeFile(
-        cacheFile,
-        JSON.stringify({
-          data,
-          expiresAt: Date.now() + 60 * 60 * 1000 // 1 hour
-        })
-      );
-    } catch (error) {
-      console.warn("Server cache write error:", error);
-    }
+    await fs.mkdir(cacheDir, { recursive: true });
+    await fs.writeFile(
+      cacheFile,
+      JSON.stringify({
+        data,
+        expiresAt: Date.now() + 60 * 60 * 1000 // 1 hour
+      })
+    );
+  } catch (error) {
+    console.warn("Server cache write error:", error);
   }
 }
 
