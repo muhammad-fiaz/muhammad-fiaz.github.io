@@ -253,14 +253,12 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border blog-content"
         >
           <Content />
-          <div
-            class="my-8 w-full flex justify-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl"
-          >
+          <div class="my-8 w-full">
             <AdUnit
-              slot={siteConfig.adsense.slots.inArticle}
+              slot={siteConfig.adsense.slots.inArticle.main}
               layout="in-article"
               format="fluid"
-              class="text-center block w-full"
+              class="min-h-[280px]"
               style="display:block; text-align:center; width: 100%;"
               fullWidthResponsive={true}
             />
@@ -356,13 +354,11 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           )
         }
 
-        <div
-          class="mt-12 w-full flex justify-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl"
-        >
+        <div class="mt-12 w-full">
           <AdUnit
-            slot={siteConfig.adsense.slots.multiplex}
+            slot={siteConfig.adsense.slots.multiplex.main}
             format="autorelaxed"
-            class="block w-full"
+            class="min-h-[280px]"
             style="display:block; width: 100%;"
             fullWidthResponsive={true}
           />

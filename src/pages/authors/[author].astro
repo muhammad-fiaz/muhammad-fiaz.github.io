@@ -166,10 +166,10 @@ const totalWords = posts.reduce((acc, post) => {
               {(index + 1) % 6 === 0 && (
                 <div class="py-4">
                   <AdUnit
-                    slot={siteConfig.adsense.slots.inFeed.id}
-                    layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                    slot={siteConfig.adsense.slots.inFeed.main.id}
+                    layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
                     format="fluid"
-                    class="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4"
+                    class="bg-muted/50 border border-border/30 rounded-[14px]"
                   />
                 </div>
               )}

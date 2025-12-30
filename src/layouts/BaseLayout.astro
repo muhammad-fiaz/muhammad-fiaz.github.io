@@ -167,9 +167,10 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
         <script
           is:inline
           async
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsense.clientId}`}
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
           crossorigin="anonymous"
         />
+        <script is:inline async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
       )
     }
 
@@ -199,6 +200,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
         height="0"
         width="0"
         style="display:none;visibility:hidden"
+        loading="lazy"
         aria-hidden="true"></iframe>
     </noscript>
 
@@ -209,7 +211,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       >
         <div class="pointer-events-auto">
           <AdUnit
-            slot={siteConfig.adsense.slots.display}
+            slot={siteConfig.adsense.slots.display.ad6}
             format="vertical"
             style="display:inline-block;width:160px;height:600px"
           />
@@ -222,7 +224,7 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       >
         <div class="pointer-events-auto">
           <AdUnit
-            slot={siteConfig.adsense.slots.display}
+            slot={siteConfig.adsense.slots.display.ad1}
             format="vertical"
             style="display:inline-block;width:160px;height:600px"
           />

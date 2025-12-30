@@ -450,10 +450,10 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                       className="py-6 w-full overflow-hidden"
                     >
                         <AdUnit
-                          slot={siteConfig.adsense.slots.inFeed.id}
-                          layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                          slot={siteConfig.adsense.slots.inFeed.main.id}
+                          layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
                           format="fluid"
-                          className="bg-card/50 backdrop-blur-sm rounded-xl border border-border/50 p-4 w-full block"
+                          className="w-full"
                           style={{ display: 'block', width: '100%' }}
                           fullWidthResponsive={true}
                         />

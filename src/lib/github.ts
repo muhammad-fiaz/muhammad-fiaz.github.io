@@ -1,5 +1,5 @@
 import { siteConfig } from "@/site.config";
-import { getCachedData, setCachedData, CACHE_KEYS, clearCachedData } from "@/lib/indexeddb-cache";
+import { setCachedData, CACHE_KEYS, clearCachedData } from "@/lib/indexeddb-cache";
 
 export interface GitHubRepository {
   id: number;

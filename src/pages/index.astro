@@ -6,9 +6,19 @@ import { BentoGrid } from "@/components/home/BentoGrid";
 import { Projects } from "@/components/home/Projects";
 import { FAQ } from "@/components/home/FAQ";
 import { siteConfig } from "@/site.config";
+import { AdUnit } from "@/components/ui/AdUnit";
+import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
+import { getImage } from "astro:assets";
 
 const title = "Home";
 const description = siteConfig.seo.defaultDescription;
+
+const optimizedAvatar = await getImage({
+  src: siteConfig.author.avatar,
+  width: 180,
+  height: 180,
+  format: "webp",
+});
 ---
 
 <BaseLayout title={title} description={description} image={siteConfig.ogImage}>
@@ -25,21 +35,53 @@ const description = siteConfig.seo.defaultDescription;
   </div>
 
   <!-- Main Content -->
-  <div class="w-full">
-    <Hero client:load />
+  <div class="w-full overflow-x-hidden">
+    <Hero client:load avatarSrc={optimizedAvatar.src} />
 
     <About client:visible />
 
+    <!-- AdSense Ad (Standard - Desktop/Tablet) -->
+    <div
+      class="hidden sm:block container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display.main}
+        format="auto"
+        fullWidthResponsive={true}
+      />
+    </div>
 
+    <!-- AMP Ad (Mobile Only) -->
+    <div class="sm:hidden mx-4 my-4">
+      <AmpAdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.multiplex.main}
+        height={250}
+      />
+    </div>
 
     <BentoGrid client:visible />
 
+    <!-- AdSense Ad (Standard - Second Instance) -->
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display.ad5}
+        format="auto"
+        fullWidthResponsive={true}
+      />
+    </div>
 
     <section
       id="projects"
       class="min-h-screen flex flex-col justify-center py-16 sm:py-20 lg:py-24 relative"
     >
-      <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 rounded-xl">
+      <div
+        class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 rounded-xl overflow-hidden"
+      >
         <div class="text-center mb-12 sm:mb-16 space-y-4">
           <h2 class="text-2xl sm:text-3xl md:text-5xl font-bold tracking-tight">
             Recent Projects
@@ -55,7 +97,26 @@ const description = siteConfig.seo.defaultDescription;
       </div>
     </section>
 
+    <!-- AdSense Ad Above FAQ (Desktop/Tablet) -->
+    <div
+      class="hidden sm:block container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display.ad6}
+        format="auto"
+        fullWidthResponsive={true}
+      />
+    </div>
 
+    <!-- AMP Ad Above FAQ (Mobile Only) -->
+    <div class="sm:hidden mx-4 my-4">
+      <AmpAdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.multiplex.ad4}
+        height={250}
+      />
+    </div>
 
     <FAQ client:load />
   </div>

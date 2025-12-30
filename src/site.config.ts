@@ -52,13 +52,34 @@ export const siteConfig = {
     enabled: true, 
     clientId: "ca-pub-2040560600290490",
     slots: {
-      inFeed: {
-        id: "6038142699",
-        layoutKey: "-ef+6k-30-ac+ty"
+      // Display ads
+      display: {
+        ad1: "1421261714",
+        ad5: "1038118330",
+        ad6: "1673926045",
+        main: "9331354598"
       },
-      multiplex: "7542796054",
-      inArticle: "3651652507",
-      display: "9331354598"
+      // In-article ads
+      inArticle: {
+        ad2: "2308296961",
+        main: "3651652507"
+      },
+      // In-feed ads
+      inFeed: {
+        ad3: {
+          id: "5304666400",
+          layoutKey: "-fb+5w+4e-db+86"
+        },
+        main: {
+          id: "6038142699",
+          layoutKey: "-fb+5w+4e-db+86"
+        }
+      },
+      // Multiplex ads
+      multiplex: {
+        ad4: "9560154927",
+        main: "7542796054"
+      }
     }
   },
 
@@ -76,7 +97,7 @@ export const siteConfig = {
       { name: "Cookie Policy", href: "/cookie-policy" },
       { name: "Contact", href: "mailto:contact@muhammadfiaz.com" },
       { name: "RSS Feed", href: "/rss.xml" },
-      { name: "Sitemap", href: "/sitemap-index.xml" },
+      { name: "Sitemap", href: "/sitemap.xml" },
     ] as Array<{ name: string; href: string }>
   },
 

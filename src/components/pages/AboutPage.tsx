@@ -207,10 +207,10 @@ export function AboutPage() {
 
               <div className="py-2">
                  <AdUnit
-                   slot={siteConfig.adsense.slots.display}
+                   slot={siteConfig.adsense.slots.display.main}
                    format="auto"
                    fullWidthResponsive={true}
-                   className="block w-full"
+                   className="w-full"
                  />
               </div>
 

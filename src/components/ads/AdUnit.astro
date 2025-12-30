@@ -23,16 +23,22 @@ const {
   layoutKey,
   layout,
   class: className,
-  style = "display: block",
+  style = "display: block; max-width: 100%;",
   fullWidthResponsive,
 } = Astro.props;
 ---
 
 {
   siteConfig.adsense.enabled && (
-    <div class={`w-full flex justify-center ${className || ""}`}>
+    <div
+      class={`w-full max-w-full flex justify-center items-center relative bg-secondary/50 rounded-xl overflow-hidden transition-colors duration-200 ${className || ""}`}
+    >
+      {/* Placeholder text */}
+      <span class="absolute inset-0 flex items-center justify-center text-muted-foreground/50 text-sm font-medium pointer-events-none ad-placeholder py-8">
+        Advertisement
+      </span>
       <ins
-        class="adsbygoogle"
+        class="adsbygoogle relative z-10 w-full"
         style={style}
         data-ad-client={siteConfig.adsense.clientId}
         data-ad-slot={slot}
@@ -47,3 +53,11 @@ const {
     </div>
   )
 }
+
+<style>
+  /* Hide placeholder when ad loads */
+  .adsbygoogle[data-ad-status="filled"] ~ .ad-placeholder,
+  .adsbygoogle:not(:empty) ~ .ad-placeholder {
+    display: none;
+  }
+</style>

@@ -85,7 +85,11 @@ const socialIconVariants: Variants = {
   },
 };
 
-export function Hero() {
+interface HeroProps {
+  avatarSrc?: string;
+}
+
+export function Hero({ avatarSrc }: HeroProps) {
   const [roleIndex, setRoleIndex] = React.useState(0);
   const roles = siteConfig.author.roles;
 
@@ -165,7 +169,7 @@ export function Hero() {
             {/* Main image container */}
             <div className="relative p-1 rounded-2xl bg-gradient-to-tr from-primary/20 to-secondary/20 backdrop-blur-sm">
               <img
-                src={siteConfig.author.avatar}
+                src={avatarSrc || siteConfig.author.avatar}
                 alt={siteConfig.author.name}
                 width="180"
                 height="180"

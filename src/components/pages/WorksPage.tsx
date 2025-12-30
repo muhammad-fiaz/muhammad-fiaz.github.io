@@ -12,6 +12,7 @@ import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AdUnit } from "@/components/ui/AdUnit";
+import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
 import {
   Card,
   CardHeader,
@@ -428,12 +429,11 @@ export function WorksPageContent() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <div className="py-8">
+                  <div className="py-8 w-full max-w-full overflow-hidden">
                      <AdUnit
-                       slot={siteConfig.adsense.slots.display}
+                       slot={siteConfig.adsense.slots.display.main}
                        format="auto"
                        fullWidthResponsive={true}
-                       className="block w-full"
                      />
                   </div>
                   <div className="flex items-center justify-between mb-8">
@@ -458,12 +458,22 @@ export function WorksPageContent() {
                       <React.Fragment key={repo.id}>
                         <WorkCard repo={repo} index={index} />
                         {(index + 1) % 6 === 0 && (
-                          <div className="col-span-1 sm:col-span-2 lg:col-span-3 py-4">
-                            <AdUnit
-                              slot={siteConfig.adsense.slots.inFeed.id}
-                              layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
-                              format="fluid"
-                              className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4"
+                          <div className="col-span-1 sm:col-span-2 lg:col-span-3 py-4 w-full max-w-full overflow-hidden">
+                            {/* Standard AdUnit for Desktop/Tablet */}
+                            <div className="hidden sm:block w-full max-w-full overflow-hidden">
+                              <AdUnit
+                                slot={siteConfig.adsense.slots.inFeed.main.id}
+                                layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
+                                format="fluid"
+                                style={{ display: 'block', width: '100%', maxWidth: '100%' }}
+                                fullWidthResponsive={true}
+                              />
+                            </div>
+                            {/* AMP Ad for Mobile */}
+                            <AmpAdUnit
+                              slot={siteConfig.adsense.slots.multiplex.main}
+                              height={250}
+                              className="sm:hidden"
                             />
                           </div>
                         )}
