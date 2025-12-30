@@ -390,14 +390,16 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                             <span>{post.readingTime} min read</span>
                           </div>
                           <span className="hidden sm:inline">•</span>
-                          <a
-                            href={`/authors/${slugify(post.author)}`}
-                            className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors"
-                            onClick={(e) => e.stopPropagation()}
+                          <div
+                            className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                window.location.href = `/authors/${slugify(post.author)}`;
+                            }}
                           >
                             <User className="h-3.5 w-3.5" />
                             <span>{post.author}</span>
-                          </a>
+                          </div>
                         </div>
                       </CardHeader>
 

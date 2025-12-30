@@ -49,9 +49,7 @@ export function AboutPage() {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 lg:right-auto lg:-left-2 bg-primary text-primary-foreground rounded-full p-2">
-                    <Sparkles className="h-5 w-5" />
-                  </div>
+
                 </div>
 
                 <div className="text-center lg:text-left">

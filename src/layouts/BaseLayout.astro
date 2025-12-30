@@ -175,7 +175,9 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
     <slot name="head" />
   </head>
 
-  <body class="bg-background font-sans antialiased min-h-screen flex flex-col">
+  <body
+    class="bg-background font-sans antialiased min-h-screen flex flex-col overflow-x-hidden"
+  >
     <noscript>
       <iframe
         src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}

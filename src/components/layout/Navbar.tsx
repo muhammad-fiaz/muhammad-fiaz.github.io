@@ -9,6 +9,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
   SheetTrigger
 } from "@/components/ui/sheet";
 import { Heart, Menu, Home, Briefcase, FolderGit2, User, BookOpen } from "lucide-react";
@@ -42,7 +43,7 @@ export function Navbar() {
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       className={cn(
-        "fixed top-0 z-50 w-full transition-all duration-300",
+        "fixed top-0 z-[100] w-full transition-all duration-300",
         isScrolled
           ? "bg-background/95 backdrop-blur-md supports-[backdrop-filter]:bg-background/80 border-b shadow-sm"
           : "bg-transparent"
@@ -128,6 +129,9 @@ export function Navbar() {
                   <SheetTitle className="text-left">
                     {siteConfig.author.name}
                   </SheetTitle>
+                  <SheetDescription className="sr-only">
+                    Mobile navigation menu
+                  </SheetDescription>
                 </SheetHeader>
 
                 <nav className="flex flex-col gap-2">
