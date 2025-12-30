@@ -94,19 +94,18 @@ export const AdUnit: React.FC<AdUnitProps> = ({
       )}
     >
       {/* Placeholder text shown until ad loads */}
-      {!isLoaded && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="absolute inset-0 flex items-center justify-center py-8"
-        >
-          <span className="text-muted-foreground/50 text-sm font-medium">
-            {hasError ? "Ad unavailable" : "Advertisement"}
-          </span>
-        </motion.div>
-      )}
+      <div 
+        className={cn(
+          "absolute inset-0 flex items-center justify-center py-8 transition-opacity duration-300 pointer-events-none",
+          "ad-placeholder-text"
+        )}
+      >
+        <span className="text-muted-foreground/50 text-sm font-medium">
+          {hasError ? "Ad unavailable" : "Advertisement"}
+        </span>
+      </div>
       <ins
-        className="adsbygoogle w-full"
+        className="adsbygoogle w-full relative z-10"
         style={{ ...style, maxWidth: '100%' }}
         data-ad-client={siteConfig.adsense.clientId}
         data-ad-slot={slot}
@@ -115,6 +114,13 @@ export const AdUnit: React.FC<AdUnitProps> = ({
         data-ad-layout={layout}
         data-full-width-responsive={fullWidthResponsive}
       />
+      <style>{`
+        .adsbygoogle[data-ad-status="filled"] ~ .ad-placeholder-text,
+        .adsbygoogle:not(:empty) ~ .ad-placeholder-text {
+          display: none;
+          opacity: 0;
+        }
+      `}</style>
     </motion.div>
   );
 };
