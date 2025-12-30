@@ -29,14 +29,18 @@ export const AmpAdUnit: React.FC<AmpAdUnitProps> = ({
 }) => {
   if (!siteConfig.adsense.enabled) return null;
 
-  const ampAdHtml = `<amp-ad width="100vw" height="${height}"
-    type="adsense"
-    data-ad-client="${siteConfig.adsense.clientId}"
-    data-ad-slot="${slot}"
-    data-auto-format="mcrspv"
-    data-full-width="">
-    <div overflow></div>
-  </amp-ad>`;
+  // For non-AMP pages, amp-ad works but we should ensure it has enough space
+  // We use dangerouslySetInnerHTML to ensure the AMP tag is rendered exactly as needed
+  const ampAdHtml = `
+    <amp-ad width="100vw" height="${height}"
+      type="adsense"
+      data-ad-client="${siteConfig.adsense.clientId}"
+      data-ad-slot="${slot}"
+      data-auto-format="mcrspv"
+      data-full-width="">
+      <div overflow></div>
+    </amp-ad>
+  `;
 
   return (
     <motion.div 
@@ -46,15 +50,28 @@ export const AmpAdUnit: React.FC<AmpAdUnitProps> = ({
       variants={containerVariants}
       className={`w-full max-w-full flex flex-col justify-center items-center bg-secondary/50 rounded-xl py-8 relative overflow-hidden ${className}`}
     >
-      <motion.span 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-        className="absolute text-muted-foreground/50 text-sm font-medium"
+      {/* Placeholder text using global CSS hiding logic if possible, 
+          but for AMP we'll use a simpler approach since data-ad-status might not be present */}
+      <span 
+        className="absolute inset-0 flex items-center justify-center text-muted-foreground/50 text-sm font-medium pointer-events-none ad-placeholder-text"
       >
         Advertisement
-      </motion.span>
-      <div dangerouslySetInnerHTML={{ __html: ampAdHtml }} />
+      </span>
+      
+      <div 
+        className="w-full relative z-10"
+        dangerouslySetInnerHTML={{ __html: ampAdHtml.trim() }} 
+      />
+      
+      <style>{`
+        /* Use CSS to hide the placeholder when the amp-ad child has content or becomes visible */
+        /* Note: amp-ad adds its own classes like .amp-active or changes state */
+        amp-ad.amp-active ~ .ad-placeholder-text,
+        amp-ad[data-loading-state="complete"] ~ .ad-placeholder-text {
+          display: none !important;
+          opacity: 0 !important;
+        }
+      `}</style>
     </motion.div>
   );
 };

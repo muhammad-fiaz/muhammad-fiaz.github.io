@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { siteConfig } from '@/site.config';
 import { cn } from '@/lib/utils';
@@ -40,26 +40,29 @@ export const AdUnit: React.FC<AdUnitProps> = ({
   style = { display: 'block' },
   fullWidthResponsive,
 }) => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const pushedRef = useRef(false);
 
   useEffect(() => {
+    // Only run on client
+    if (typeof window === 'undefined') return;
+
     const pushAd = () => {
+      if (pushedRef.current) return;
       try {
-        if (typeof window !== 'undefined' && window.adsbygoogle) {
+        if (window.adsbygoogle) {
           window.adsbygoogle.push({});
-          setTimeout(() => setIsLoaded(true), 1000);
+          pushedRef.current = true;
         }
       } catch (err) {
-        // Silently handle errors - expected on localhost
         setHasError(true);
         console.warn('AdSense push error (expected on localhost):', err);
       }
     };
 
     const checkAndPush = () => {
-      const container = document.getElementById(`ad-${slot}`);
-      if (container && container.clientWidth > 0) {
+      if (containerRef.current && containerRef.current.clientWidth > 0) {
         pushAd();
         return true;
       }
@@ -69,8 +72,12 @@ export const AdUnit: React.FC<AdUnitProps> = ({
     // Delay ad push to ensure container is rendered with proper width
     const timer = setTimeout(() => {
       if (!checkAndPush()) {
-        // Retry after a longer delay if first attempt fails
-        setTimeout(checkAndPush, 1000);
+        const retryTimer = setInterval(() => {
+          if (checkAndPush()) {
+            clearInterval(retryTimer);
+          }
+        }, 1000);
+        return () => clearInterval(retryTimer);
       }
     }, 100);
 
@@ -81,7 +88,7 @@ export const AdUnit: React.FC<AdUnitProps> = ({
 
   return (
     <motion.div 
-      id={`ad-${slot}`}
+      ref={containerRef}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "-50px" }}
@@ -93,12 +100,9 @@ export const AdUnit: React.FC<AdUnitProps> = ({
         className
       )}
     >
-      {/* Placeholder text shown until ad loads */}
+      {/* Placeholder text hidden via CSS when ad loads */}
       <div 
-        className={cn(
-          "absolute inset-0 flex items-center justify-center py-8 transition-opacity duration-300 pointer-events-none",
-          "ad-placeholder-text"
-        )}
+        className="absolute inset-0 flex items-center justify-center py-8 ad-placeholder-text"
       >
         <span className="text-muted-foreground/50 text-sm font-medium">
           {hasError ? "Ad unavailable" : "Advertisement"}
@@ -114,13 +118,6 @@ export const AdUnit: React.FC<AdUnitProps> = ({
         data-ad-layout={layout}
         data-full-width-responsive={fullWidthResponsive}
       />
-      <style>{`
-        .adsbygoogle[data-ad-status="filled"] ~ .ad-placeholder-text,
-        .adsbygoogle:not(:empty) ~ .ad-placeholder-text {
-          display: none;
-          opacity: 0;
-        }
-      `}</style>
     </motion.div>
   );
 };
