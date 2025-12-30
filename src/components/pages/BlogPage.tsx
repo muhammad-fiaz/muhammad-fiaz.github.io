@@ -201,7 +201,7 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
   }, [currentPage, totalPages]);
 
   return (
-    <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+    <div className="container w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
       <motion.header
         variants={headerVariants}
         initial="hidden"

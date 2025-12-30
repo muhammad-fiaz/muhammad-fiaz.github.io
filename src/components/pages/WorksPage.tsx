@@ -369,7 +369,7 @@ export function WorksPageContent() {
       <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
 
-        <div className="container max-w-6xl mx-auto px-4">
+        <div className="container w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -396,7 +396,7 @@ export function WorksPageContent() {
       </section>
 
       <section className="pb-16 sm:pb-20">
-        <div className="container max-w-6xl mx-auto px-4">
+        <div className="container w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {isLoading && (
             <div className="space-y-8 mb-16">
               <FeaturedCardSkeleton />

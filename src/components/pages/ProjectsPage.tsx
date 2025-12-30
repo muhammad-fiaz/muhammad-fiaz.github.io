@@ -475,7 +475,7 @@ export function ProjectsPageContent({
       <section className="relative py-16 sm:py-20 lg:py-24 overflow-hidden">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-primary/10 via-background to-background" />
         
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -522,7 +522,7 @@ export function ProjectsPageContent({
       </section>
 
       <section className="pb-16 sm:pb-20">
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="container w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4 sm:p-6 mb-6">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col sm:flex-row gap-3">

@@ -344,7 +344,7 @@ export function BentoGrid() {
       id="skills"
       className="py-16 sm:py-20 lg:py-24 relative overflow-hidden"
     >
-      <div className="container max-w-6xl mx-auto px-4">
+      <div className="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -33,7 +33,7 @@ export function AboutPage() {
   return (
     <div className="min-h-screen">
       <section className="relative py-16 sm:py-20 lg:py-24">
-        <div className="container max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="container w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -20 }}

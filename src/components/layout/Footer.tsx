@@ -184,7 +184,7 @@ export function Footer() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex items-center gap-2"
+            className="flex items-center flex-wrap justify-center sm:justify-start gap-2"
           >
             <TooltipProvider>
               {socialLinks.map((social) => {
