@@ -154,10 +154,16 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
     <!-- Google AdSense Meta Tag -->
     {
       siteConfig.adsense.enabled && (
-        <meta
-          name="google-adsense-account"
-          content={siteConfig.adsense.clientId}
-        />
+          <meta
+            name="google-adsense-account"
+            content={siteConfig.adsense.clientId}
+          />
+          <script
+            is:inline
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsense.clientId}`}
+            crossorigin="anonymous"
+          />
       )
     }
 
@@ -238,16 +244,6 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
 
       <Footer client:load />
     </div>
-    <!-- Google AdSense Script (Moved to body end for better loading) -->
-    {
-      siteConfig.adsense.enabled && (
-        <script
-          is:inline
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          crossorigin="anonymous"
-        />
-      )
-    }
+
   </body>
 </html>
