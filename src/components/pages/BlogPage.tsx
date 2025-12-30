@@ -449,14 +449,27 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                       animate={{ opacity: 1 }}
                       className="py-6 w-full overflow-hidden"
                     >
-                        <AdUnit
-                          slot={siteConfig.adsense.slots.inFeed.main.id}
-                          layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
-                          format="fluid"
-                          className="w-full"
-                          style={{ display: 'block', width: '100%' }}
-                          fullWidthResponsive={true}
-                        />
+                        {/* Desktop Ad */}
+                        <div className="hidden sm:block w-full">
+                          <AdUnit
+                            slot={siteConfig.adsense.slots.inFeed.main.id}
+                            layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
+                            format="fluid"
+                            className="w-full"
+                            style={{ display: 'block', width: '100%' }}
+                            fullWidthResponsive={true}
+                          />
+                        </div>
+                        {/* Mobile Ad */}
+                        <div className="sm:hidden w-full">
+                          <AdUnit
+                            slot={siteConfig.adsense.slots.multiplex.main}
+                            format="rectangle"
+                            className="w-full"
+                            style={{ display: 'block', width: '100%' }}
+                            fullWidthResponsive={true}
+                          />
+                        </div>
                     </motion.div>
                   )}
                 </React.Fragment>

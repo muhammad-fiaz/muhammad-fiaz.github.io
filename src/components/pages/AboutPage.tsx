@@ -206,12 +206,24 @@ export function AboutPage() {
               </div>
 
               <div className="py-2">
-                 <AdUnit
-                   slot={siteConfig.adsense.slots.display.main}
-                   format="auto"
-                   fullWidthResponsive={true}
-                   className="w-full"
-                 />
+                 {/* Desktop Ad */}
+                 <div className="hidden sm:block">
+                   <AdUnit
+                     slot={siteConfig.adsense.slots.display.main}
+                     format="horizontal"
+                     fullWidthResponsive={true}
+                     className="w-full"
+                   />
+                 </div>
+                 {/* Mobile Ad */}
+                 <div className="sm:hidden">
+                   <AdUnit
+                     slot={siteConfig.adsense.slots.display.main}
+                     format="rectangle"
+                     fullWidthResponsive={true}
+                     className="w-full"
+                   />
+                 </div>
               </div>
 
               <Separator />

@@ -429,11 +429,22 @@ export function WorksPageContent() {
                   transition={{ delay: 0.3 }}
                 >
                   <div className="py-8 w-full max-w-full overflow-hidden">
-                     <AdUnit
-                       slot={siteConfig.adsense.slots.display.main}
-                       format="auto"
-                       fullWidthResponsive={true}
-                     />
+                     {/* Desktop Ad */}
+                     <div className="hidden sm:block w-full max-w-full overflow-hidden">
+                       <AdUnit
+                         slot={siteConfig.adsense.slots.display.main}
+                         format="horizontal"
+                         fullWidthResponsive={true}
+                       />
+                     </div>
+                     {/* Mobile Ad */}
+                     <div className="sm:hidden w-full max-w-full overflow-hidden">
+                       <AdUnit
+                         slot={siteConfig.adsense.slots.display.main}
+                         format="rectangle"
+                         fullWidthResponsive={true}
+                       />
+                     </div>
                   </div>
                   <div className="flex items-center justify-between mb-8">
                     <div>
@@ -472,7 +483,7 @@ export function WorksPageContent() {
                             <div className="sm:hidden w-full max-w-full overflow-hidden">
                               <AdUnit
                                 slot={siteConfig.adsense.slots.multiplex.main}
-                                format="autorelaxed"
+                                format="rectangle"
                                 style={{ display: 'block', width: '100%', maxWidth: '100%' }}
                                 fullWidthResponsive={true}
                               />

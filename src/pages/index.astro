@@ -45,7 +45,7 @@ const optimizedAvatar = await getImage({
     >
       <AdUnit
         slot={siteConfig.adsense.slots.display.main}
-        format="auto"
+        format="horizontal"
         fullWidthResponsive={true}
       />
     </div>
@@ -54,7 +54,7 @@ const optimizedAvatar = await getImage({
     <div class="sm:hidden mx-4 my-4 overflow-hidden">
       <AdUnit
         slot={siteConfig.adsense.slots.display.main}
-        format="auto"
+        format="rectangle"
         fullWidthResponsive={true}
       />
     </div>
@@ -65,11 +65,22 @@ const optimizedAvatar = await getImage({
     <div
       class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
     >
-      <AdUnit
-        slot={siteConfig.adsense.slots.display.ad5}
-        format="auto"
-        fullWidthResponsive={true}
-      />
+      <!-- Desktop Ad -->
+      <div class="hidden sm:block">
+        <AdUnit
+          slot={siteConfig.adsense.slots.display.ad5}
+          format="horizontal"
+          fullWidthResponsive={true}
+        />
+      </div>
+      <!-- Mobile Ad -->
+      <div class="sm:hidden">
+        <AdUnit
+          slot={siteConfig.adsense.slots.display.ad5}
+          format="rectangle"
+          fullWidthResponsive={true}
+        />
+      </div>
     </div>
 
     <section

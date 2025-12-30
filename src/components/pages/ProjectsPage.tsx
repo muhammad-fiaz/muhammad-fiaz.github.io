@@ -810,7 +810,7 @@ export function ProjectsPageContent({
                           <div className="sm:hidden w-full max-w-full overflow-hidden">
                             <AdUnit
                               slot={siteConfig.adsense.slots.multiplex.main}
-                              format="autorelaxed"
+                              format="rectangle"
                               style={{ display: 'block', width: '100%', maxWidth: '100%' }}
                               fullWidthResponsive={true}
                             />

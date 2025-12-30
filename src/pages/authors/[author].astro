@@ -165,12 +165,23 @@ const totalWords = posts.reduce((acc, post) => {
               </a>
               {(index + 1) % 6 === 0 && (
                 <div class="py-4 overflow-hidden">
-                  <AdUnit
-                    slot={siteConfig.adsense.slots.inFeed.main.id}
-                    layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
-                    format="fluid"
-                    class="bg-muted/50 border border-border/30 rounded-[14px]"
-                  />
+                  <!-- Desktop Ad -->
+                  <div class="hidden sm:block">
+                    <AdUnit
+                      slot={siteConfig.adsense.slots.inFeed.main.id}
+                      layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}
+                      format="fluid"
+                      class="bg-muted/50 border border-border/30 rounded-[14px]"
+                    />
+                  </div>
+                  <!-- Mobile Ad -->
+                  <div class="sm:hidden">
+                    <AdUnit
+                      slot={siteConfig.adsense.slots.multiplex.main}
+                      format="rectangle"
+                      class="bg-muted/50 border border-border/30 rounded-[14px]"
+                    />
+                  </div>
                 </div>
               )}
             </article>
