@@ -12,7 +12,6 @@ import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
 import {
   Card,
   CardHeader,
@@ -469,12 +468,15 @@ export function WorksPageContent() {
                                 fullWidthResponsive={true}
                               />
                             </div>
-                            {/* AMP Ad for Mobile */}
-                            <AmpAdUnit
-                              slot={siteConfig.adsense.slots.multiplex.main}
-                              height={250}
-                              className="sm:hidden"
-                            />
+                            {/* Mobile Ad */}
+                            <div className="sm:hidden w-full max-w-full overflow-hidden">
+                              <AdUnit
+                                slot={siteConfig.adsense.slots.multiplex.main}
+                                format="autorelaxed"
+                                style={{ display: 'block', width: '100%', maxWidth: '100%' }}
+                                fullWidthResponsive={true}
+                              />
+                            </div>
                           </div>
                         )}
                       </React.Fragment>

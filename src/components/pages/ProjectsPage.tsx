@@ -18,7 +18,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { AdUnit } from "@/components/ui/AdUnit";
-import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
 import {
   Card,
   CardHeader,
@@ -784,11 +783,15 @@ export function ProjectsPageContent({
                 )}
               >
                 <AnimatePresence mode="popLayout">
-                  {repos.map((repo, index) => (
-                    <React.Fragment key={repo.id}>
-                      <ProjectCard repo={repo} index={index} />
-                      {(index + 1) % 6 === 0 && (
+                  {repos.flatMap((repo, index) => {
+                    const elements = [
+                      <ProjectCard key={repo.id} repo={repo} index={index} />
+                    ];
+                    
+                    if ((index + 1) % 6 === 0) {
+                      elements.push(
                         <motion.div
+                          key={`ad-unit-${index}`}
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           className="col-span-1 sm:col-span-2 lg:col-span-3 py-4 w-full"
@@ -803,16 +806,21 @@ export function ProjectsPageContent({
                              fullWidthResponsive={true}
                            />
                           </div>
-                          {/* AMP Ad for Mobile */}
-                          <AmpAdUnit
-                            slot={siteConfig.adsense.slots.multiplex.main}
-                            height={250}
-                            className="sm:hidden"
-                          />
+                          {/* Mobile Ad */}
+                          <div className="sm:hidden w-full max-w-full overflow-hidden">
+                            <AdUnit
+                              slot={siteConfig.adsense.slots.multiplex.main}
+                              format="autorelaxed"
+                              style={{ display: 'block', width: '100%', maxWidth: '100%' }}
+                              fullWidthResponsive={true}
+                            />
+                          </div>
                         </motion.div>
-                      )}
-                    </React.Fragment>
-                  ))}
+                      );
+                    }
+                    
+                    return elements;
+                  })}
                 </AnimatePresence>
               </motion.div>
 

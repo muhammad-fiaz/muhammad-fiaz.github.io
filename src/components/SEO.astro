@@ -169,7 +169,7 @@ const websiteSchema = {
 
 const webPageSchema = {
   "@context": "https://schema.org",
-  "@type": type === "article" ? "Article" : type === "profile" ? "ProfilePage" : "WebPage",
+  "@type": (type === "article" || type === "blog") ? "Article" : type === "profile" ? "ProfilePage" : "WebPage",
   "@id": canonicalURL,
   url: canonicalURL,
   name: title,

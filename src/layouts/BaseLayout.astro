@@ -4,7 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import SEO from "@/components/SEO.astro";
 import { siteConfig } from "@/site.config";
-import { AdUnit } from "@/components/ui/AdUnit";
+import AdUnit from "@/components/ads/AdUnit.astro";
 
 interface Props {
   title?: string;
@@ -139,10 +139,10 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
     </script>
 
     <script
-      is:inline
+      type="text/partytown"
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
-    <script is:inline define:vars={{ gaId }}>
+    <script type="text/partytown" define:vars={{ gaId }}>
       window.dataLayer = window.dataLayer || [];
       function gtag() {
         dataLayer.push(arguments);
@@ -161,18 +161,6 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       )
     }
 
-    <!-- Google AdSense -->
-    {
-      siteConfig.adsense.enabled && (
-        <script
-          is:inline
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-          crossorigin="anonymous"
-        />
-        <script is:inline async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js"></script>
-      )
-    }
 
     <style is:global>
       /* Prevent layout shifts from ads */
@@ -211,10 +199,9 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       >
         <div class="pointer-events-auto">
           <AdUnit
-            client:idle
             slot={siteConfig.adsense.slots.display.ad6}
             format="vertical"
-            style={{ display: 'inline-block', width: '160px', height: '600px' }}
+            style="display: inline-block; width: 160px; height: 600px;"
           />
         </div>
       </aside>
@@ -225,10 +212,9 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       >
         <div class="pointer-events-auto">
           <AdUnit
-            client:idle
             slot={siteConfig.adsense.slots.display.ad1}
             format="vertical"
-            style={{ display: 'inline-block', width: '160px', height: '600px' }}
+            style="display: inline-block; width: 160px; height: 600px;"
           />
         </div>
       </aside>
@@ -249,5 +235,16 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
 
       <Footer client:load />
     </div>
+    <!-- Google AdSense Script (Moved to body end for better loading) -->
+    {
+      siteConfig.adsense.enabled && (
+        <script
+          is:inline
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+          crossorigin="anonymous"
+        />
+      )
+    }
   </body>
 </html>

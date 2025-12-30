@@ -93,7 +93,7 @@ const { tagName, posts } = Astro.props;
               </div>
             </a>
             {(index + 1) % 6 === 0 && (
-              <div class="py-4">
+              <div class="py-4 overflow-hidden">
                 <AdUnit
                   slot={siteConfig.adsense.slots.inFeed.main.id}
                   layoutKey={siteConfig.adsense.slots.inFeed.main.layoutKey}

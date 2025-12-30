@@ -1,7 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
-import { AdUnit } from "@/components/ui/AdUnit";
-import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
+import AdUnit from "@/components/ads/AdUnit.astro";
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Button } from "@/components/ui/button";
@@ -258,21 +257,23 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
             <!-- Desktop/Tablet Ad -->
             <div class="hidden sm:block">
               <AdUnit
-                client:visible
                 slot={siteConfig.adsense.slots.inArticle.main}
                 format="fluid"
                 layout="in-article"
-                className="min-h-[280px]"
-                style={{ display: "block", textAlign: "center", width: "100%" }}
+                class="min-h-[280px]"
+                style="display: block; text-align: center; width: 100%;"
                 fullWidthResponsive={true}
               />
             </div>
             <!-- Mobile Ad -->
             <div class="sm:hidden">
-              <AmpAdUnit
-                client:visible
+              <AdUnit
                 slot={siteConfig.adsense.slots.inArticle.main}
-                height={280}
+                format="fluid"
+                layout="in-article"
+                class="min-h-[280px]"
+                style="display: block; text-align: center; width: 100%;"
+                fullWidthResponsive={true}
               />
             </div>
           </div>
@@ -371,20 +372,21 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           <!-- Desktop/Tablet Ad -->
           <div class="hidden sm:block">
             <AdUnit
-              client:visible
               slot={siteConfig.adsense.slots.multiplex.main}
               format="autorelaxed"
-              className="min-h-[280px]"
-              style={{ display: "block", width: "100%" }}
+              class="min-h-[280px]"
+              style="display: block; width: 100%;"
               fullWidthResponsive={true}
             />
           </div>
           <!-- Mobile Ad -->
           <div class="sm:hidden">
-            <AmpAdUnit
-              client:visible
+            <AdUnit
               slot={siteConfig.adsense.slots.multiplex.main}
-              height={280}
+              format="autorelaxed"
+              class="min-h-[280px]"
+              style="display: block; width: 100%;"
+              fullWidthResponsive={true}
             />
           </div>
         </div>

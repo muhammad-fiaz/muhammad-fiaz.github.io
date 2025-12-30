@@ -6,8 +6,7 @@ import { BentoGrid } from "@/components/home/BentoGrid";
 import { Projects } from "@/components/home/Projects";
 import { FAQ } from "@/components/home/FAQ";
 import { siteConfig } from "@/site.config";
-import { AdUnit } from "@/components/ui/AdUnit";
-import { AmpAdUnit } from "@/components/ui/AmpAdUnit";
+import AdUnit from "@/components/ads/AdUnit.astro";
 import { getImage } from "astro:assets";
 
 const title = "Home";
@@ -45,19 +44,18 @@ const optimizedAvatar = await getImage({
       class="hidden sm:block container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
     >
       <AdUnit
-        client:visible
         slot={siteConfig.adsense.slots.display.main}
         format="auto"
         fullWidthResponsive={true}
       />
     </div>
 
-    <!-- AMP Ad (Mobile Only) -->
-    <div class="sm:hidden mx-4 my-4">
-      <AmpAdUnit
-        client:visible
-        slot={siteConfig.adsense.slots.multiplex.main}
-        height={250}
+    <!-- Mobile Ad -->
+    <div class="sm:hidden mx-4 my-4 overflow-hidden">
+      <AdUnit
+        slot={siteConfig.adsense.slots.display.main}
+        format="auto"
+        fullWidthResponsive={true}
       />
     </div>
 
@@ -68,7 +66,6 @@ const optimizedAvatar = await getImage({
       class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
     >
       <AdUnit
-        client:visible
         slot={siteConfig.adsense.slots.display.ad5}
         format="auto"
         fullWidthResponsive={true}
@@ -96,27 +93,6 @@ const optimizedAvatar = await getImage({
         <Projects client:visible />
       </div>
     </section>
-
-    <!-- AdSense Ad Above FAQ (Desktop/Tablet) -->
-    <div
-      class="hidden sm:block container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
-    >
-      <AdUnit
-        client:visible
-        slot={siteConfig.adsense.slots.display.ad6}
-        format="auto"
-        fullWidthResponsive={true}
-      />
-    </div>
-
-    <!-- AMP Ad Above FAQ (Mobile Only) -->
-    <div class="sm:hidden mx-4 my-4">
-      <AmpAdUnit
-        client:visible
-        slot={siteConfig.adsense.slots.multiplex.ad4}
-        height={250}
-      />
-    </div>
 
     <FAQ client:load />
   </div>

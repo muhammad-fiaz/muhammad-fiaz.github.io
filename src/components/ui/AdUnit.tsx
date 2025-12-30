@@ -48,16 +48,42 @@ export const AdUnit: React.FC<AdUnitProps> = ({
     // Only run on client
     if (typeof window === 'undefined') return;
 
-    const pushAd = () => {
-      if (pushedRef.current) return;
+    const pushAd = (retries = 0) => {
+      if (pushedRef.current || retries > 3) return;
+
+      const container = containerRef.current;
+      if (!container) return;
+
+      // Strict visibility check
+      const rect = container.getBoundingClientRect();
+      const style = window.getComputedStyle(container);
+      if (rect.width === 0 || rect.height === 0 || style.display === 'none' || style.visibility === 'hidden') {
+         // Container not visible yet, retry later without incrementing retries heavily
+         setTimeout(() => pushAd(retries), 500);
+         return;
+      }
+
       try {
-        if (window.adsbygoogle) {
-          window.adsbygoogle.push({});
+        // Double check window.adsbygoogle existence safely
+        const w = window as any;
+        if (w.adsbygoogle) {
+          w.adsbygoogle.push({});
           pushedRef.current = true;
         }
-      } catch (err) {
+      } catch (err: any) {
         setHasError(true);
-        console.warn('AdSense push error (expected on localhost):', err);
+        
+        // Don't retry if it's a slot size error (structural issue)
+        if (err?.message?.includes('No slot size')) {
+           // Component hidden or too small, skipping push (expected for responsive ads)
+           return;
+        }
+
+        // Only log warning if not already pushed (to avoid spam)
+        if (!pushedRef.current) {
+          console.warn('AdSense push warning:', err);
+          setTimeout(() => pushAd(retries + 1), 2000);
+        }
       }
     };
 
@@ -117,6 +143,7 @@ export const AdUnit: React.FC<AdUnitProps> = ({
         data-ad-layout-key={layoutKey}
         data-ad-layout={layout}
         data-full-width-responsive={fullWidthResponsive}
+        suppressHydrationWarning={true}
       />
     </motion.div>
   );
