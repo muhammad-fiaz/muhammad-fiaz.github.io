@@ -46,9 +46,9 @@ export function FAQ() {
   return (
     <section
       id="faq"
-      className="min-h-[60vh] flex flex-col justify-center py-12 sm:py-16 lg:py-20 bg-muted/20"
+      className="min-h-[60vh] flex flex-col justify-center py-12 sm:py-16 lg:py-20 bg-muted/20 w-full overflow-hidden"
     >
-      <div className="container w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

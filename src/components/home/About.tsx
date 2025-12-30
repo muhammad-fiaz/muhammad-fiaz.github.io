@@ -8,9 +8,9 @@ export function About() {
   return (
     <section
       id="about"
-      className="min-h-screen flex items-center justify-center py-16 sm:py-20 lg:py-24 relative bg-muted/20"
+      className="min-h-screen flex items-center justify-center py-16 sm:py-20 lg:py-24 relative bg-muted/20 w-full overflow-hidden"
     >
-      <div className="container w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
