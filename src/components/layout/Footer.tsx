@@ -76,8 +76,8 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative z-50 border-t bg-background w-full overflow-hidden">
-      <div className="container max-w-7xl mx-auto px-4 py-12">
+    <footer className="relative z-50 border-t bg-background w-full overflow-hidden" suppressHydrationWarning={true}>
+      <div className="container max-w-7xl mx-auto px-4 pt-12 pb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
           <div className="space-y-4">
             <motion.div

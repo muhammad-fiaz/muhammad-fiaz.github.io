@@ -47,6 +47,7 @@ export function FAQ() {
     <section
       id="faq"
       className="min-h-[60vh] flex flex-col justify-center py-12 sm:py-16 lg:py-20 bg-muted/20 w-full overflow-hidden"
+      suppressHydrationWarning={true}
     >
       <div className="container w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}

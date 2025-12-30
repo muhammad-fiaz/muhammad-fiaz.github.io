@@ -9,6 +9,7 @@ export function About() {
     <section
       id="about"
       className="min-h-screen flex items-center justify-center py-16 sm:py-20 lg:py-24 relative bg-muted/20 w-full overflow-hidden"
+      suppressHydrationWarning={true}
     >
       <div className="container w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
