@@ -7,6 +7,7 @@ import { siteConfig } from "@/site.config";
 import { ArrowLeft, Calendar, Clock, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import AdUnit from "@/components/ads/AdUnit.astro";
 
 export async function getStaticPaths() {
   const posts: CollectionEntry<"blog">[] = await getCollection("blog");
@@ -114,7 +115,7 @@ const totalWords = posts.reduce((acc, post) => {
 
     <div class="space-y-4 sm:space-y-6">
       {
-        posts.map((post) => {
+        posts.map((post, index) => {
           const readingTime = getReadingTime(post.body);
           return (
             <article>
@@ -162,6 +163,16 @@ const totalWords = posts.reduce((acc, post) => {
                   </p>
                 </div>
               </a>
+              {(index + 1) % 6 === 0 && (
+                <div class="py-4">
+                  <AdUnit
+                    slot={siteConfig.adsense.slots.inFeed.id}
+                    layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                    format="fluid"
+                    class="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4"
+                  />
+                </div>
+              )}
             </article>
           );
         })

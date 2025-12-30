@@ -140,25 +140,88 @@ async function fetchWithRetry(
   throw lastError || new Error("Failed to fetch from GitHub API");
 }
 
+// Helper to get raw server cache with metadata
+async function getServerCacheRaw(key: string): Promise<{ data: any; expiresAt: number } | null> {
+  if (typeof window === "undefined") {
+    try {
+      const fs = await import("node:fs/promises");
+      const path = await import("node:path");
+      const cacheDir = path.resolve(process.cwd(), ".cache");
+      const cacheFile = path.join(cacheDir, `${key}.json`);
+
+      try {
+        await fs.access(cacheFile);
+      } catch {
+        return null; // File doesn't exist
+      }
+
+      const fileContent = await fs.readFile(cacheFile, "utf-8");
+      const entry = JSON.parse(fileContent);
+      return entry; 
+    } catch (error) {
+      // Ignore errors (file not found, corrupt, etc)
+      return null;
+    }
+  }
+  return null;
+}
+
+async function setServerCache(key: string, data: any): Promise<void> {
+  if (typeof window === "undefined") {
+    try {
+      const fs = await import("node:fs/promises");
+      const path = await import("node:path");
+      const cacheDir = path.resolve(process.cwd(), ".cache");
+      const cacheFile = path.join(cacheDir, `${key}.json`);
+
+      await fs.mkdir(cacheDir, { recursive: true });
+      await fs.writeFile(
+        cacheFile,
+        JSON.stringify({
+          data,
+          expiresAt: Date.now() + 60 * 60 * 1000 // 1 hour
+        })
+      );
+    } catch (error) {
+      console.warn("Server cache write error:", error);
+    }
+  }
+}
+
 export async function fetchUserRepositories(
   username: string = siteConfig.github.username,
   forceRefresh: boolean = false
 ): Promise<GitHubRepository[]> {
-  if (!forceRefresh) {
-    const cached = await getCachedData<GitHubRepository[]>(CACHE_KEYS.GITHUB_REPOS);
-    if (cached && cached.length > 0) {
-      return cached;
-    }
-  }
+  const cacheKey = CACHE_KEYS.GITHUB_REPOS;
+  const now = Date.now();
   
+  // 1. Attempt to load any existing cache (Fresh or Stale) for fallback purposes
+  let cachedEntry: { data: GitHubRepository[]; expiresAt: number } | null = null;
+  
+  if (typeof window !== "undefined") {
+    // Client-side: IndexedDB
+    // We import this dynamically if needed or just use the helper
+    const { getRawCacheEntry } = await import("@/lib/indexeddb-cache");
+    cachedEntry = await getRawCacheEntry<GitHubRepository[]>(cacheKey);
+  } else {
+    // Server-side: FS
+    cachedEntry = await getServerCacheRaw(cacheKey);
+  }
+
+  // 2. If we have FRESH cache and aren't forcing refresh, return it immediately
+  if (!forceRefresh && cachedEntry && now < cachedEntry.expiresAt) {
+    return cachedEntry.data;
+  }
+
+  // 3. Otherwise, try to fetch from API
   const allRepos: GitHubRepository[] = [];
   let page = 1;
   let hasMore = true;
 
-  while (hasMore) {
-    const url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated&direction=desc&type=owner`;
-
-    try {
+  try {
+    while (hasMore) {
+      const url = `https://api.github.com/users/${username}/repos?per_page=100&page=${page}&sort=updated&direction=desc&type=owner`;
+      
       const response = await fetchWithRetry(url);
       const repos: GitHubRepository[] = await response.json();
 
@@ -171,39 +234,90 @@ export async function fetchUserRepositories(
           hasMore = false;
         }
       }
-    } catch (error) {
-      const cached = await getCachedData<GitHubRepository[]>(CACHE_KEYS.GITHUB_REPOS);
-      if (cached && cached.length > 0) {
-        return cached;
-      }
-      throw error;
     }
+
+    const filteredRepos = allRepos.filter(
+      (repo) => !siteConfig.github.excludedRepos.includes(repo.name)
+    );
+
+    // Success! Save to cache (Client or Server)
+    if (typeof window !== "undefined") {
+      await setCachedData(cacheKey, filteredRepos);
+    } else {
+      await setServerCache(cacheKey, filteredRepos);
+    }
+    
+    return filteredRepos;
+
+  } catch (error) {
+    // Only log full error if it's NOT a rate limit (to keep console clean)
+    const isRateLimit = error instanceof Error && error.message.includes("rate limit");
+    
+    if (isRateLimit) {
+      console.warn("GitHub API rate limit exceeded. Using cached data if available.");
+    } else {
+      console.warn("GitHub fetch failed:", error);
+    }
+    
+    // 4. API Failed: Return STALE cache if available
+    if (cachedEntry) {
+      if (!isRateLimit) console.info("Serving stale cache data due to API failure.");
+      return cachedEntry.data;
+    }
+    
+    // 5. No cache available at all: Return empty or rethrow
+    // Returning empty array allows the build to silently succeed with no data, 
+    // which is better than crashing for a static site generator.
+    return []; 
   }
-
-  const filteredRepos = allRepos.filter(
-    (repo) => !siteConfig.github.excludedRepos.includes(repo.name)
-  );
-
-  await setCachedData(CACHE_KEYS.GITHUB_REPOS, filteredRepos);
-  
-  return filteredRepos;
 }
 
 export async function fetchUserProfile(
   username: string = siteConfig.github.username
 ): Promise<GitHubUser> {
-  const cached = await getCachedData<GitHubUser>(CACHE_KEYS.GITHUB_PROFILE);
-  if (cached) {
-    return cached;
+  const cacheKey = CACHE_KEYS.GITHUB_PROFILE;
+  const now = Date.now();
+  
+  // 1. Load any existing cache (Fresh or Stale)
+  let cachedEntry: { data: GitHubUser; expiresAt: number } | null = null;
+
+  if (typeof window !== "undefined") {
+     const { getRawCacheEntry } = await import("@/lib/indexeddb-cache");
+     cachedEntry = await getRawCacheEntry<GitHubUser>(cacheKey);
+  } else {
+     cachedEntry = await getServerCacheRaw(cacheKey);
   }
 
-  const url = `https://api.github.com/users/${username}`;
-  const response = await fetchWithRetry(url);
-  const profile = await response.json();
-  
-  await setCachedData(CACHE_KEYS.GITHUB_PROFILE, profile);
-  
-  return profile;
+  // 2. Return Fresh Cache directly
+  if (cachedEntry && now < cachedEntry.expiresAt) {
+    return cachedEntry.data;
+  }
+
+  try {
+    const url = `https://api.github.com/users/${username}`;
+    const response = await fetchWithRetry(url);
+    const profile = await response.json();
+    
+    // Success: Update Cache
+    if (typeof window !== "undefined") {
+      await setCachedData(cacheKey, profile);
+    } else {
+      await setServerCache(cacheKey, profile);
+    }
+    
+    return profile;
+  } catch (error) {
+     console.warn("GitHub profile fetch failed. Attempting fallback.", error);
+     
+     // 3. Fail: Use Stale Cache if available
+     if (cachedEntry) {
+       console.info("Serving stale profile data.");
+       return cachedEntry.data;
+     }
+
+     // 4. No Data: Rethrow or mock
+     throw error;
+  }
 }
 
 export async function fetchRepoReadme(

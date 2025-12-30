@@ -50,7 +50,16 @@ export const siteConfig = {
 
   adsense: {
     enabled: true, 
-    clientId: "ca-pub-2040560600290490"
+    clientId: "ca-pub-2040560600290490",
+    slots: {
+      inFeed: {
+        id: "6038142699",
+        layoutKey: "-ef+6k-30-ac+ty"
+      },
+      multiplex: "7542796054",
+      inArticle: "3651652507",
+      display: "9331354598"
+    }
   },
 
   navigation: {

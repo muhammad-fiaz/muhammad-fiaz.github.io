@@ -55,6 +55,14 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       cssMinify: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+             vendor: ['react', 'react-dom', 'framer-motion'],
+             layout: ['src/components/layout/Footer.tsx', 'src/components/layout/Navbar.tsx'],
+          },
+        },
+      },
     },
     ssr: {
       noExternal: ["framer-motion"],

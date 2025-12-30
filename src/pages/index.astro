@@ -6,6 +6,7 @@ import { BentoGrid } from "@/components/home/BentoGrid";
 import { Projects } from "@/components/home/Projects";
 import { FAQ } from "@/components/home/FAQ";
 import { siteConfig } from "@/site.config";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 const title = "Home";
 const description = siteConfig.seo.defaultDescription;
@@ -30,7 +31,33 @@ const description = siteConfig.seo.defaultDescription;
 
     <About client:visible />
 
+    <!-- AdSense Ad -->
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex justify-center items-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl max-w-[412px] sm:max-w-6xl"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display}
+        format="auto"
+        fullWidthResponsive={true}
+        className="block w-full"
+      />
+    </div>
+
     <BentoGrid client:visible />
+
+    <!-- AdSense Ad -->
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex justify-center items-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl max-w-[412px] sm:max-w-6xl"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display}
+        format="auto"
+        fullWidthResponsive={true}
+        className="block w-full"
+      />
+    </div>
 
     <section
       id="projects"
@@ -51,6 +78,19 @@ const description = siteConfig.seo.defaultDescription;
         <Projects client:visible />
       </div>
     </section>
+
+    <!-- AdSense Ad -->
+    <div
+      class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex justify-center items-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl max-w-[412px] sm:max-w-6xl"
+    >
+      <AdUnit
+        client:visible
+        slot={siteConfig.adsense.slots.display}
+        format="auto"
+        fullWidthResponsive={true}
+        className="block w-full"
+      />
+    </div>
 
     <FAQ client:load />
   </div>

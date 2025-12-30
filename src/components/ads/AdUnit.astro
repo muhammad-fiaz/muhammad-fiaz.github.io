@@ -1,0 +1,49 @@
+---
+import { siteConfig } from "@/site.config";
+
+interface Props {
+  slot: string;
+  format?:
+    | "auto"
+    | "fluid"
+    | "autorelaxed"
+    | "vertical"
+    | "rectangle"
+    | "horizontal";
+  layoutKey?: string;
+  layout?: string;
+  class?: string;
+  style?: string;
+  fullWidthResponsive?: boolean;
+}
+
+const {
+  slot,
+  format = "auto",
+  layoutKey,
+  layout,
+  class: className,
+  style = "display: block",
+  fullWidthResponsive,
+} = Astro.props;
+---
+
+{
+  siteConfig.adsense.enabled && (
+    <div class={`w-full flex justify-center ${className || ""}`}>
+      <ins
+        class="adsbygoogle"
+        style={style}
+        data-ad-client={siteConfig.adsense.clientId}
+        data-ad-slot={slot}
+        data-ad-format={format}
+        data-ad-layout-key={layoutKey}
+        data-ad-layout={layout}
+        data-full-width-responsive={fullWidthResponsive}
+      />
+      <script is:inline>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  )
+}

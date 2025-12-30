@@ -17,6 +17,7 @@ import { siteConfig } from "@/site.config";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdUnit } from "@/components/ui/AdUnit";
 import {
   Card,
   CardHeader,
@@ -783,7 +784,23 @@ export function ProjectsPageContent({
               >
                 <AnimatePresence mode="popLayout">
                   {repos.map((repo, index) => (
-                    <ProjectCard key={repo.id} repo={repo} index={index} />
+                    <React.Fragment key={repo.id}>
+                      <ProjectCard repo={repo} index={index} />
+                      {(index + 1) % 6 === 0 && (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="col-span-1 sm:col-span-2 lg:col-span-3 py-4"
+                        >
+                           <AdUnit
+                             slot={siteConfig.adsense.slots.inFeed.id}
+                             layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                             format="fluid"
+                             className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4"
+                           />
+                        </motion.div>
+                      )}
+                    </React.Fragment>
                   ))}
                 </AnimatePresence>
               </motion.div>

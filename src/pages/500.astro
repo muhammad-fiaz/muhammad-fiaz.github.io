@@ -2,6 +2,7 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { ServerError } from "@/components/pages/ServerError";
 import { siteConfig } from "@/site.config";
+import AdUnit from "@/components/ads/AdUnit.astro";
 
 const title = "500 - Server Error | " + siteConfig.author.name;
 const description = "Something went wrong on our end. Please try again later.";
@@ -16,4 +17,12 @@ const description = "Something went wrong on our end. Please try again later.";
   </div>
 
   <ServerError client:load />
+
+  <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <AdUnit
+      slot={siteConfig.adsense.slots.display}
+      format="auto"
+      fullWidthResponsive={true}
+    />
+  </div>
 </BaseLayout>

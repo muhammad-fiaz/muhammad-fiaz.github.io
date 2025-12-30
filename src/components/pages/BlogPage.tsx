@@ -1,8 +1,9 @@
 "use client";
-
+import { siteConfig } from "@/site.config";
 import * as React from "react";
 import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import { AdUnit } from "@/components/ui/AdUnit";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -340,107 +341,125 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
               const isFirst = index === 0 && currentPage === 1 && !selectedTag && !searchQuery;
 
               return (
-                <motion.article key={post.id} variants={itemVariants}>
-                  <a href={`/blog/${post.id}`} className="block group">
-                    <Card
-                      className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 ${
-                        isFirst
-                          ? "ring-1 ring-primary/20 bg-gradient-to-br from-primary/5 to-transparent"
-                          : "bg-card/50 backdrop-blur-sm"
-                      }`}
-                    >
-                      <CardHeader className="pb-2 sm:pb-3">
-                        {isFirst && (
-                          <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="flex items-center gap-1.5 mb-2"
-                          >
-                            <Sparkles className="h-4 w-4 text-primary animate-pulse" />
-                            <span className="text-xs font-semibold text-primary uppercase tracking-wider">
-                              Latest Post
-                            </span>
-                          </motion.div>
-                        )}
+                <React.Fragment key={post.id}>
+                  <motion.article variants={itemVariants}>
+                    <a href={`/blog/${post.id}`} className="block group">
+                      <Card
+                        className={`overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 ${
+                          isFirst
+                            ? "ring-1 ring-primary/20 bg-gradient-to-br from-primary/5 to-transparent"
+                            : "bg-card/50 backdrop-blur-sm"
+                        }`}
+                      >
+                        <CardHeader className="pb-2 sm:pb-3">
+                          {isFirst && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              className="flex items-center gap-1.5 mb-2"
+                            >
+                              <Sparkles className="h-4 w-4 text-primary animate-pulse" />
+                              <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                                Latest Post
+                              </span>
+                            </motion.div>
+                          )}
 
-                        <CardTitle
-                          className={`group-hover:text-primary transition-colors leading-tight ${
-                            isFirst
-                              ? "text-xl sm:text-2xl lg:text-3xl"
-                              : "text-lg sm:text-xl lg:text-2xl"
-                          }`}
-                        >
-                          {post.title}
-                        </CardTitle>
-
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-muted-foreground pt-2">
-                          <div className="flex items-center gap-1.5">
-                            <Calendar className="h-3.5 w-3.5" />
-                            <time dateTime={post.pubDate}>
-                              {new Date(post.pubDate).toLocaleDateString("en-US", {
-                                year: "numeric",
-                                month: "short",
-                                day: "numeric",
-                              })}
-                            </time>
-                          </div>
-                          <span>•</span>
-                          <div className="flex items-center gap-1.5">
-                            <Clock className="h-3.5 w-3.5" />
-                            <span>{post.readingTime} min read</span>
-                          </div>
-                          <span className="hidden sm:inline">•</span>
-                          <div
-                            className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                window.location.href = `/authors/${slugify(post.author)}`;
-                            }}
-                          >
-                            <User className="h-3.5 w-3.5" />
-                            <span>{post.author}</span>
-                          </div>
-                        </div>
-                      </CardHeader>
-
-                      <CardContent className="pt-0 pb-4 sm:pb-6">
-                        {post.tags && post.tags.length > 0 && (
-                          <div className="flex flex-wrap gap-1.5 mb-3">
-                            {post.tags.slice(0, 4).map((tag) => (
-                              <Badge key={tag} variant="secondary" className="text-[10px] sm:text-xs">
-                                {tag}
-                              </Badge>
-                            ))}
-                            {post.tags.length > 4 && (
-                              <Badge variant="outline" className="text-[10px] sm:text-xs">
-                                +{post.tags.length - 4}
-                              </Badge>
-                            )}
-                          </div>
-                        )}
-
-                        {post.description && (
-                          <CardDescription
-                            className={`leading-relaxed ${
+                          <CardTitle
+                            className={`group-hover:text-primary transition-colors leading-tight ${
                               isFirst
-                                ? "text-sm sm:text-base line-clamp-3"
-                                : "text-xs sm:text-sm line-clamp-2"
+                                ? "text-xl sm:text-2xl lg:text-3xl"
+                                : "text-lg sm:text-xl lg:text-2xl"
                             }`}
                           >
-                            {post.description}
-                          </CardDescription>
-                        )}
+                            {post.title}
+                          </CardTitle>
 
-                        <div className="flex items-center pt-3 sm:pt-4">
-                          <span className="text-xs sm:text-sm font-medium text-primary group-hover:underline inline-flex items-center gap-1">
-                            Read article
-                            <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
-                          </span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </a>
-                </motion.article>
+                          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm text-muted-foreground pt-2">
+                            <div className="flex items-center gap-1.5">
+                              <Calendar className="h-3.5 w-3.5" />
+                              <time dateTime={post.pubDate.toString()}>
+                                {new Date(post.pubDate).toLocaleDateString("en-US", {
+                                  year: "numeric",
+                                  month: "short",
+                                  day: "numeric",
+                                })}
+                              </time>
+                            </div>
+                            <span>•</span>
+                            <div className="flex items-center gap-1.5">
+                              <Clock className="h-3.5 w-3.5" />
+                              <span>{post.readingTime} min read</span>
+                            </div>
+                            <span className="hidden sm:inline">•</span>
+                            <div
+                              className="hidden sm:flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer"
+                              onClick={(e) => {
+                                  e.preventDefault();
+                                  window.location.href = `/authors/${slugify(post.author)}`;
+                              }}
+                            >
+                              <User className="h-3.5 w-3.5" />
+                              <span>{post.author}</span>
+                            </div>
+                          </div>
+                        </CardHeader>
+
+                        <CardContent className="pt-0 pb-4 sm:pb-6">
+                          {post.tags && post.tags.length > 0 && (
+                            <div className="flex flex-wrap gap-1.5 mb-3">
+                              {post.tags.slice(0, 4).map((tag) => (
+                                <Badge key={tag} variant="secondary" className="text-[10px] sm:text-xs">
+                                  {tag}
+                                </Badge>
+                              ))}
+                              {post.tags.length > 4 && (
+                                <Badge variant="outline" className="text-[10px] sm:text-xs">
+                                  +{post.tags.length - 4}
+                                </Badge>
+                              )}
+                            </div>
+                          )}
+
+                          {post.description && (
+                            <CardDescription
+                              className={`leading-relaxed ${
+                                isFirst
+                                  ? "text-sm sm:text-base line-clamp-3"
+                                  : "text-xs sm:text-sm line-clamp-2"
+                              }`}
+                            >
+                              {post.description}
+                            </CardDescription>
+                          )}
+
+                          <div className="flex items-center pt-3 sm:pt-4">
+                            <span className="text-xs sm:text-sm font-medium text-primary group-hover:underline inline-flex items-center gap-1">
+                              Read article
+                              <ChevronRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+                            </span>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </a>
+                  </motion.article>
+                  {(index + 1) % 6 === 0 && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="py-6 w-full overflow-hidden"
+                    >
+                        <AdUnit
+                          slot={siteConfig.adsense.slots.inFeed.id}
+                          layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                          format="fluid"
+                          className="bg-card/50 backdrop-blur-sm rounded-xl border border-border/50 p-4 w-full block"
+                          style={{ display: 'block', width: '100%' }}
+                          fullWidthResponsive={true}
+                        />
+                    </motion.div>
+                  )}
+                </React.Fragment>
               );
             })}
           </motion.div>

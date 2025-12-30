@@ -4,6 +4,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import SEO from "@/components/SEO.astro";
 import { siteConfig } from "@/site.config";
+import AdUnit from "@/components/ads/AdUnit.astro";
 
 interface Props {
   title?: string;
@@ -172,6 +173,20 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
       )
     }
 
+    <style is:global>
+      /* Prevent layout shifts from ads */
+      .adsbygoogle {
+        display: block;
+        min-height: 100px;
+        width: 100%;
+      }
+      @media (min-width: 1024px) {
+        .adsbygoogle[data-ad-format="vertical"] {
+          min-height: 600px;
+        }
+      }
+    </style>
+
     <slot name="head" />
   </head>
 
@@ -188,6 +203,32 @@ const gaId = siteConfig.analytics.googleAnalyticsId;
     </noscript>
 
     <div id="app-wrapper" class="relative flex flex-col min-h-screen">
+      <!-- Left Side Ad (Desktop Only) -->
+      <aside
+        class="hidden 2xl:block fixed left-4 top-24 w-[160px] h-[600px] z-10 pointer-events-none"
+      >
+        <div class="pointer-events-auto">
+          <AdUnit
+            slot={siteConfig.adsense.slots.display}
+            format="vertical"
+            style="display:inline-block;width:160px;height:600px"
+          />
+        </div>
+      </aside>
+
+      <!-- Right Side Ad (Desktop Only) -->
+      <aside
+        class="hidden 2xl:block fixed right-4 top-24 w-[160px] h-[600px] z-10 pointer-events-none"
+      >
+        <div class="pointer-events-auto">
+          <AdUnit
+            slot={siteConfig.adsense.slots.display}
+            format="vertical"
+            style="display:inline-block;width:160px;height:600px"
+          />
+        </div>
+      </aside>
+
       <Navbar client:load />
 
       <main class="flex-1 w-full pt-16">

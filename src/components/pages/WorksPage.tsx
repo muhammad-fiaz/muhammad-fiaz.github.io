@@ -11,6 +11,7 @@ import {
 import { siteConfig } from "@/site.config";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { AdUnit } from "@/components/ui/AdUnit";
 import {
   Card,
   CardHeader,
@@ -424,10 +425,17 @@ export function WorksPageContent() {
 
               {recentPopularProjects.length > 0 && (
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3 }}
                 >
+                  <div className="py-8">
+                     <AdUnit
+                       slot={siteConfig.adsense.slots.display}
+                       format="auto"
+                       fullWidthResponsive={true}
+                       className="block w-full"
+                     />
+                  </div>
                   <div className="flex items-center justify-between mb-8">
                     <div>
                       <h2 className="text-2xl font-bold tracking-tight">
@@ -447,7 +455,19 @@ export function WorksPageContent() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                     {recentPopularProjects.map((repo, index) => (
-                      <WorkCard key={repo.id} repo={repo} index={index} />
+                      <React.Fragment key={repo.id}>
+                        <WorkCard repo={repo} index={index} />
+                        {(index + 1) % 6 === 0 && (
+                          <div className="col-span-1 sm:col-span-2 lg:col-span-3 py-4">
+                            <AdUnit
+                              slot={siteConfig.adsense.slots.inFeed.id}
+                              layoutKey={siteConfig.adsense.slots.inFeed.layoutKey}
+                              format="fluid"
+                              className="bg-card/50 backdrop-blur-sm rounded-[14px] border border-border/50 p-4"
+                            />
+                          </div>
+                        )}
+                      </React.Fragment>
                     ))}
                   </div>
                 </motion.div>

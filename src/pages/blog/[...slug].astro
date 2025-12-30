@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from "astro:content";
+import AdUnit from "@/components/ads/AdUnit.astro";
 import type { CollectionEntry } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { Button } from "@/components/ui/button";
@@ -252,6 +253,18 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border blog-content"
         >
           <Content />
+          <div
+            class="my-8 w-full flex justify-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl"
+          >
+            <AdUnit
+              slot={siteConfig.adsense.slots.inArticle}
+              layout="in-article"
+              format="fluid"
+              class="text-center block w-full"
+              style="display:block; text-align:center; width: 100%;"
+              fullWidthResponsive={true}
+            />
+          </div>
         </div>
 
         <hr class="my-6 sm:my-10 border-border" />
@@ -342,6 +355,18 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
             </section>
           )
         }
+
+        <div
+          class="mt-12 w-full flex justify-center overflow-hidden min-h-[280px] bg-muted/20 rounded-xl"
+        >
+          <AdUnit
+            slot={siteConfig.adsense.slots.multiplex}
+            format="autorelaxed"
+            class="block w-full"
+            style="display:block; width: 100%;"
+            fullWidthResponsive={true}
+          />
+        </div>
       </article>
 
       <aside class="hidden lg:block">

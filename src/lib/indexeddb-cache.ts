@@ -36,15 +36,33 @@ export async function getCachedData<T>(key: string): Promise<T | null> {
     const entry = await database.cache.get(key);
     if (!entry) return null;
     
-    const now = Date.now();
-    if (now < entry.expiresAt) {
+    // Check expiration
+    if (Date.now() < entry.expiresAt) {
       return JSON.parse(entry.data) as T;
     }
     
-    await database.cache.delete(key);
+    // We do NOT delete here immediately anymore, to allow stale retrieval fallback
+    // The consumer should handle deletion or overwrite if they successfully refresh
     return null;
   } catch (error) {
     console.warn("Cache read error:", error);
+    return null;
+  }
+}
+
+export async function getRawCacheEntry<T>(key: string): Promise<{ data: T; expiresAt: number } | null> {
+  const database = getDb();
+  if (!database) return null;
+
+  try {
+    const entry = await database.cache.get(key);
+    if (!entry) return null;
+    return {
+      data: JSON.parse(entry.data) as T,
+      expiresAt: entry.expiresAt
+    };
+  } catch (error) {
+    console.warn("Raw cache read error:", error);
     return null;
   }
 }

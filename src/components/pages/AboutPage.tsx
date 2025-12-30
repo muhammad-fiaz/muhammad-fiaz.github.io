@@ -21,6 +21,7 @@ import {
   Rocket,
   Users
 } from "lucide-react";
+import { AdUnit } from "@/components/ui/AdUnit";
 
 const socialLinks = [
   { name: "GitHub", href: siteConfig.social.github, icon: Github },
@@ -202,6 +203,15 @@ export function AboutPage() {
                     </CardContent>
                   </Card>
                 </div>
+              </div>
+
+              <div className="py-2">
+                 <AdUnit
+                   slot={siteConfig.adsense.slots.display}
+                   format="auto"
+                   fullWidthResponsive={true}
+                   className="block w-full"
+                 />
               </div>
 
               <Separator />
