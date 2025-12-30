@@ -450,6 +450,7 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                       className="py-6 w-full overflow-hidden"
                     >
                         {/* Desktop Ad */}
+                        {/*
                         <div className="hidden sm:block w-full">
                           <AdUnit
                             slot={siteConfig.adsense.slots.inFeed.main.id}
@@ -460,7 +461,9 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                             fullWidthResponsive={true}
                           />
                         </div>
+                        */}
                         {/* Mobile Ad */}
+                        {/*
                         <div className="sm:hidden w-full">
                           <AdUnit
                             slot={siteConfig.adsense.slots.multiplex.main}
@@ -470,6 +473,7 @@ export function BlogPage({ posts, allTags }: BlogPageProps) {
                             fullWidthResponsive={true}
                           />
                         </div>
+                        */}
                     </motion.div>
                   )}
                 </React.Fragment>

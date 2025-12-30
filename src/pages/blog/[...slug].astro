@@ -253,8 +253,8 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           class="prose prose-sm sm:prose-base lg:prose-lg dark:prose-invert max-w-none prose-headings:scroll-mt-24 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-xl prose-pre:bg-muted/50 prose-pre:border prose-pre:border-border blog-content"
         >
           <Content />
+          <!--
           <div class="my-8 w-full overflow-hidden">
-            <!-- Desktop/Tablet Ad -->
             <div class="hidden sm:block">
               <AdUnit
                 slot={siteConfig.adsense.slots.inArticle.main}
@@ -265,7 +265,6 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
                 fullWidthResponsive={true}
               />
             </div>
-            <!-- Mobile Ad -->
             <div class="sm:hidden">
               <AdUnit
                 slot={siteConfig.adsense.slots.inArticle.main}
@@ -277,6 +276,7 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
               />
             </div>
           </div>
+          -->
         </div>
 
         <hr class="my-6 sm:my-10 border-border" />
@@ -368,8 +368,8 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
           )
         }
 
+        <!--
         <div class="mt-12 w-full overflow-hidden">
-          <!-- Desktop/Tablet Ad -->
           <div class="hidden sm:block">
             <AdUnit
               slot={siteConfig.adsense.slots.multiplex.main}
@@ -379,7 +379,6 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
               fullWidthResponsive={true}
             />
           </div>
-          <!-- Mobile Ad -->
           <div class="sm:hidden">
             <AdUnit
               slot={siteConfig.adsense.slots.multiplex.main}
@@ -390,6 +389,7 @@ const ogImage = post.data.image || `/open-graph/blog/${post.id}.png`;
             />
           </div>
         </div>
+        -->
       </article>
 
       <aside class="hidden lg:block">

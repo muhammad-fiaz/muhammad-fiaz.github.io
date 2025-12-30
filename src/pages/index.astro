@@ -40,6 +40,7 @@ const optimizedAvatar = await getImage({
     <About client:visible />
 
     <!-- AdSense Ad (Standard - Desktop/Tablet) -->
+    <!--
     <div
       class="hidden sm:block container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
     >
@@ -49,8 +50,10 @@ const optimizedAvatar = await getImage({
         fullWidthResponsive={true}
       />
     </div>
+    -->
 
     <!-- Mobile Ad -->
+    <!--
     <div class="sm:hidden mx-4 my-4 overflow-hidden">
       <AdUnit
         slot={siteConfig.adsense.slots.display.main}
@@ -58,14 +61,15 @@ const optimizedAvatar = await getImage({
         fullWidthResponsive={true}
       />
     </div>
+    -->
 
     <BentoGrid client:visible />
 
     <!-- AdSense Ad (Standard - Second Instance) -->
+    <!--
     <div
       class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-6xl overflow-hidden"
     >
-      <!-- Desktop Ad -->
       <div class="hidden sm:block">
         <AdUnit
           slot={siteConfig.adsense.slots.display.ad5}
@@ -73,7 +77,6 @@ const optimizedAvatar = await getImage({
           fullWidthResponsive={true}
         />
       </div>
-      <!-- Mobile Ad -->
       <div class="sm:hidden">
         <AdUnit
           slot={siteConfig.adsense.slots.display.ad5}
@@ -82,6 +85,7 @@ const optimizedAvatar = await getImage({
         />
       </div>
     </div>
+    -->
 
     <section
       id="projects"

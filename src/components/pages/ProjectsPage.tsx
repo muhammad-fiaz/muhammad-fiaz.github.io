@@ -797,6 +797,7 @@ export function ProjectsPageContent({
                           className="col-span-1 sm:col-span-2 lg:col-span-3 py-4 w-full"
                         >
                           {/* Standard AdUnit for Desktop */}
+                          {/*
                           <div className="hidden sm:block w-full max-w-full overflow-hidden">
                            <AdUnit
                              slot={siteConfig.adsense.slots.inFeed.main.id}
@@ -806,7 +807,9 @@ export function ProjectsPageContent({
                              fullWidthResponsive={true}
                            />
                           </div>
+                          */}
                           {/* Mobile Ad */}
+                          {/*
                           <div className="sm:hidden w-full max-w-full overflow-hidden">
                             <AdUnit
                               slot={siteConfig.adsense.slots.multiplex.main}
@@ -815,6 +818,7 @@ export function ProjectsPageContent({
                               fullWidthResponsive={true}
                             />
                           </div>
+                          */}
                         </motion.div>
                       );
                     }

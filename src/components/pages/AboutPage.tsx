@@ -207,6 +207,7 @@ export function AboutPage() {
 
               <div className="py-2">
                  {/* Desktop Ad */}
+                 {/*
                  <div className="hidden sm:block">
                    <AdUnit
                      slot={siteConfig.adsense.slots.display.main}
@@ -215,7 +216,9 @@ export function AboutPage() {
                      className="w-full"
                    />
                  </div>
+                 */}
                  {/* Mobile Ad */}
+                 {/*
                  <div className="sm:hidden">
                    <AdUnit
                      slot={siteConfig.adsense.slots.display.main}
@@ -224,6 +227,7 @@ export function AboutPage() {
                      className="w-full"
                    />
                  </div>
+                 */}
               </div>
 
               <Separator />

@@ -430,6 +430,7 @@ export function WorksPageContent() {
                 >
                   <div className="py-8 w-full max-w-full overflow-hidden">
                      {/* Desktop Ad */}
+                     {/*
                      <div className="hidden sm:block w-full max-w-full overflow-hidden">
                        <AdUnit
                          slot={siteConfig.adsense.slots.display.main}
@@ -437,7 +438,9 @@ export function WorksPageContent() {
                          fullWidthResponsive={true}
                        />
                      </div>
+                     */}
                      {/* Mobile Ad */}
+                     {/*
                      <div className="sm:hidden w-full max-w-full overflow-hidden">
                        <AdUnit
                          slot={siteConfig.adsense.slots.display.main}
@@ -445,6 +448,7 @@ export function WorksPageContent() {
                          fullWidthResponsive={true}
                        />
                      </div>
+                     */}
                   </div>
                   <div className="flex items-center justify-between mb-8">
                     <div>
@@ -470,6 +474,8 @@ export function WorksPageContent() {
                         {(index + 1) % 6 === 0 && (
                           <div className="col-span-1 sm:col-span-2 lg:col-span-3 py-4 w-full max-w-full overflow-hidden">
                             {/* Standard AdUnit for Desktop/Tablet */}
+                            {/* Desktop Ad */}
+                            {/*
                             <div className="hidden sm:block w-full max-w-full overflow-hidden">
                               <AdUnit
                                 slot={siteConfig.adsense.slots.inFeed.main.id}
@@ -479,7 +485,9 @@ export function WorksPageContent() {
                                 fullWidthResponsive={true}
                               />
                             </div>
+                            */}
                             {/* Mobile Ad */}
+                            {/*
                             <div className="sm:hidden w-full max-w-full overflow-hidden">
                               <AdUnit
                                 slot={siteConfig.adsense.slots.multiplex.main}
@@ -488,6 +496,7 @@ export function WorksPageContent() {
                                 fullWidthResponsive={true}
                               />
                             </div>
+                            */}
                           </div>
                         )}
                       </React.Fragment>
