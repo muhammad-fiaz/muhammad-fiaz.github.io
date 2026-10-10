@@ -14,7 +14,7 @@
     "@astrojs/mdx": "^5.0.3",
     "@astrojs/partytown": "^2.1.4",
     "@astrojs/react": "^4.4.2",
-    "@astrojs/rss": "^4.0.14",
+    "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.6.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
