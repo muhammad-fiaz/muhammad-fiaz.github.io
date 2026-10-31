@@ -30,7 +30,7 @@ const staticPages = {
   },
 };
 
-export const { getStaticPaths, GET } = OGImageRoute({
+const route = await OGImageRoute({
   param: "route",
   pages: staticPages,
   getImageOptions: (_path, page) => ({
@@ -60,3 +60,8 @@ export const { getStaticPaths, GET } = OGImageRoute({
     padding: 80,
   }),
 });
+
+export function getStaticPaths() {
+  return route.getStaticPaths();
+}
+export const GET = route.GET;

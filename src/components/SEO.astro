@@ -254,14 +254,6 @@ const projectSchema = project
         "@type": "Person",
         "@id": `${siteConfig.url}/#person`,
       },
-      ...(project.stars && {
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: Math.min(5, (project.stars / 100) * 5),
-          ratingCount: project.stars,
-          bestRating: 5,
-        },
-      }),
     }
   : null;
 

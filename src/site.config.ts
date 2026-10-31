@@ -45,7 +45,8 @@ export const siteConfig = {
 
   analytics: {
     googleAnalyticsId: "G-6BVYCRK57P",
-    googleTagManagerId: "GTM-P4M9T8ZR"
+    googleTagManagerId: "GTM-P4M9T8ZR",
+    clarityId: "z5vdzih779"
   },
 
   adsense: {

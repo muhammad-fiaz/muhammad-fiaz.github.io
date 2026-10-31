@@ -11,7 +11,7 @@ const blogPages = blogPosts.reduce((acc, post) => {
   return acc;
 }, {} as Record<string, { title: string; description: string }>);
 
-export const { getStaticPaths, GET } = OGImageRoute({
+const route = await OGImageRoute({
   param: 'route',
   pages: {
     'index': {
@@ -43,3 +43,8 @@ export const { getStaticPaths, GET } = OGImageRoute({
     },
   }),
 });
+
+export function getStaticPaths() {
+  return route.getStaticPaths();
+}
+export const GET = route.GET;
